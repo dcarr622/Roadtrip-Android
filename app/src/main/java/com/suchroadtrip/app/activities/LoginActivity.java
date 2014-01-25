@@ -20,7 +20,23 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.loopj.android.http.PersistentCookieStore;
 import com.suchroadtrip.app.R;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -53,11 +69,13 @@ public class LoginActivity extends Activity {
     private UserLoginTask mAuthTask = null;
 
     // Values for email and password at the time of the login attempt.
+    private String mUser;
     private String mEmail;
     private String mPassword;
 
     // UI references.
     private EditText mEmailView;
+    private EditText mUserView;
     private EditText mPasswordView;
     private View mLoginFormView;
     private View mLoginStatusView;
@@ -74,9 +92,18 @@ public class LoginActivity extends Activity {
     protected static final String AUTHENTICATION_URL_KEY = "AUTHENTICATION_URL_KEY";
     protected static final int LOGIN_TO_TWITTER_REQUEST= 0;
 
+    /* HTTP stuff */
+
+    DefaultHttpClient httpClient;
+    PersistentCookieStore cookieStore;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        httpClient = new DefaultHttpClient();
+        cookieStore = new PersistentCookieStore(getApplicationContext());
+        httpClient.setCookieStore(cookieStore);
 
         setContentView(R.layout.activity_login);
 
@@ -160,7 +187,7 @@ public class LoginActivity extends Activity {
         }
 
         // Check for a valid email address.
-        if (TextUtils.isEmpty(mEmail)) {
+        /*if (TextUtils.isEmpty(mEmail)) {
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
@@ -168,7 +195,7 @@ public class LoginActivity extends Activity {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
-        }
+        }*/
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
@@ -231,13 +258,60 @@ public class LoginActivity extends Activity {
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
 
+            HttpPost postRequest = new HttpPost(getString(R.string.roadtrip_login_url));
+
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+            nameValuePairs.add(new BasicNameValuePair("username", mEmail));
+            nameValuePairs.add(new BasicNameValuePair("password", mPassword));
+
+            HttpResponse response = null;
+            HttpEntity entity = null;
+            List<Cookie> cookiejar = null;
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
+                postRequest.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                response = httpClient.execute(postRequest);
+                entity = response.getEntity();
+                cookiejar = httpClient.getCookieStore().getCookies();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            if (entity != null) {
+                String retSrc = null;
+                String status = null;
+                try {
+                    retSrc = EntityUtils.toString(entity);
+                    JSONObject result = new JSONObject(retSrc); //Convert String to JSON Object
+                    status = result.getString("status");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                // parsing JSON
+                if (status.equals("ok")) {
+                    Log.v("Login", "ok");
+                    editor = sharedPrefs.edit();
+                    editor.putString("userCookie", cookiejar.get(0).toString());
+                    editor.commit();
+
+                    HttpGet httpget = new HttpGet(getString(R.string.roadtrip_user_check));
+
+                    try {
+                    HttpResponse userCheckResponse = httpClient.execute(httpget);
+                    String userCheckresp = EntityUtils.toString(userCheckResponse.getEntity());
+                    JSONObject getResult = new JSONObject(userCheckresp);
+                    String username = getResult.getString("username");
+                    Log.v("usernameCheck", username);
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+                else if (status.equals("err")) {
+                    Log.v("Login", "err");
+                }
             }
 
             for (String credential : DUMMY_CREDENTIALS) {
