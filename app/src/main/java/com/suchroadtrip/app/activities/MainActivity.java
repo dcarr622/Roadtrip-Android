@@ -11,12 +11,15 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.suchroadtrip.app.R;
 import com.suchroadtrip.app.data.TripAdapter;
@@ -68,6 +71,11 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         setContentView(R.layout.activity_main);
 
         getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+
+//        int titleID = getResources().getIdentifier("action_bar_title", "id", "android);");
+//        TextView titleTextView = (TextView) findViewById(titleID);
+//        Typeface tf = Typeface.createFromAsset(getAssets(), "@asset/AlegreyaSans-Black.ttf");
+//       titleTextView.setTypeface(tf);
 
         getLoaderManager().initLoader(0, null, this);
 
