@@ -4,7 +4,9 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.MergeCursor;
 import android.net.Uri;
+import android.util.Log;
 
 import java.util.Arrays;
 
@@ -12,6 +14,8 @@ import java.util.Arrays;
  * Created by vmagro on 1/24/14.
  */
 public class RTContentProvider extends ContentProvider {
+
+    private static final String TAG = "suchcontent";
 
     public static final String AUTHORITY = "com.suchroadtrip.provider";
 
@@ -21,6 +25,7 @@ public class RTContentProvider extends ContentProvider {
     public static final Uri SOCIAL_URI = Uri.withAppendedPath(baseUri, RTOpenHelper.TABLE_SOCIAL);
     public static final Uri LOCATION_URI = Uri.withAppendedPath(baseUri, RTOpenHelper.TABLE_LOCATION);
     public static final Uri PHOTO_URI = Uri.withAppendedPath(baseUri, RTOpenHelper.TABLE_PHOTO);
+    public static final Uri ALL_EVENTS_URI = Uri.withAppendedPath(baseUri, "events");
 
     private static final int MATCH_TRIP = 1;
     private static final int MATCH_SOCIAL_UPDATE_TRIP = 2;
@@ -30,6 +35,8 @@ public class RTContentProvider extends ContentProvider {
     private static final int MATCH_SOCIAL = 5;
     private static final int MATCH_PHOTO = 6;
     private static final int MATCH_LOCATION = 7;
+
+    private static final int MATCH_ALL_EVENTS = 8;
 
     private static UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
@@ -43,6 +50,8 @@ public class RTContentProvider extends ContentProvider {
         uriMatcher.addURI(AUTHORITY, RTOpenHelper.TABLE_SOCIAL, MATCH_SOCIAL);
         uriMatcher.addURI(AUTHORITY, RTOpenHelper.TABLE_PHOTO, MATCH_PHOTO);
         uriMatcher.addURI(AUTHORITY, RTOpenHelper.TABLE_LOCATION, MATCH_LOCATION);
+
+        uriMatcher.addURI(AUTHORITY, "events/#", MATCH_ALL_EVENTS);
     }
 
     private RTOpenHelper dbHelper = null;
@@ -50,6 +59,7 @@ public class RTContentProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         dbHelper = new RTOpenHelper(getContext());
+        Log.i(TAG, "onCreate");
         return true;
     }
 
@@ -67,6 +77,17 @@ public class RTContentProvider extends ContentProvider {
                 break;
             case MATCH_PHOTO_TRIP:
                 table = RTOpenHelper.TABLE_PHOTO;
+                break;
+            case MATCH_ALL_EVENTS:
+                String id = uri.getLastPathSegment();
+                Log.d(TAG, "looking for all events for " + id);
+                Log.d(TAG, Uri.withAppendedPath(SOCIAL_URI, id).toString());
+                Cursor socialCursor = query(Uri.withAppendedPath(SOCIAL_URI, id), projection, selection, selectionArgs, sortOrder);
+                Log.d(TAG, "found " + socialCursor.getCount() + " social events");
+                Cursor locationCursor = query(Uri.withAppendedPath(LOCATION_URI, id), projection, selection, selectionArgs, sortOrder);
+                Cursor photoCursor = query(Uri.withAppendedPath(PHOTO_URI, id), projection, selection, selectionArgs, sortOrder);
+                Cursor[] cursors = new Cursor[]{socialCursor, locationCursor, photoCursor};
+                return new MergeCursor(cursors);
         }
 
         //this section is to make the query only include the results for that trip id
@@ -79,8 +100,10 @@ public class RTContentProvider extends ContentProvider {
         newSelectionArgs[newSelectionArgs.length - 1] = uri.getLastPathSegment();
         //end trip id selection section
 
+        Log.d(TAG, "querying " + table + " for event " + uri.getLastPathSegment());
+
         if (table != null)
-            return dbHelper.getReadableDatabase().query(table, projection, selection, selectionArgs, null, null, sortOrder);
+            return dbHelper.getReadableDatabase().query(table, projection, selection, newSelectionArgs, null, null, sortOrder);
         return null;
     }
 
