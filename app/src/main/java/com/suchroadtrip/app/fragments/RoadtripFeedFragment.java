@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.suchroadtrip.app.R;
 import com.suchroadtrip.app.data.TripEventAdapter;
@@ -59,6 +60,7 @@ public class RoadtripFeedFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         TripEventAdapter adapter = new TripEventAdapter(getActivity(), cursor);
+        ((ListView) getView().findViewById(R.id.feed)).setAdapter(adapter);
     }
 
     @Override

@@ -65,18 +65,22 @@ public class RTContentProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+        Uri notificationUri = null;
         String table = null;
         switch (uriMatcher.match(uri)) {
             case MATCH_TRIP:
                 return dbHelper.getReadableDatabase().query(RTOpenHelper.TABLE_TRIPS, projection, selection, selectionArgs, null, null, sortOrder);
             case MATCH_SOCIAL_UPDATE_TRIP:
                 table = RTOpenHelper.TABLE_SOCIAL;
+                notificationUri = SOCIAL_URI;
                 break;
             case MATCH_LOCATION_TRIP:
                 table = RTOpenHelper.TABLE_LOCATION;
+                notificationUri = LOCATION_URI;
                 break;
             case MATCH_PHOTO_TRIP:
                 table = RTOpenHelper.TABLE_PHOTO;
+                notificationUri = PHOTO_URI;
                 break;
             case MATCH_ALL_EVENTS:
                 String id = uri.getLastPathSegment();
@@ -87,7 +91,10 @@ public class RTContentProvider extends ContentProvider {
                 Cursor locationCursor = query(Uri.withAppendedPath(LOCATION_URI, id), projection, selection, selectionArgs, sortOrder);
                 Cursor photoCursor = query(Uri.withAppendedPath(PHOTO_URI, id), projection, selection, selectionArgs, sortOrder);
                 Cursor[] cursors = new Cursor[]{socialCursor, locationCursor, photoCursor};
-                return new MergeCursor(cursors);
+                notificationUri = ALL_EVENTS_URI;
+                MergeCursor mergeCursor = new MergeCursor(cursors);
+                mergeCursor.setNotificationUri(getContext().getContentResolver(), notificationUri);
+                return mergeCursor;
         }
 
         //this section is to make the query only include the results for that trip id
@@ -102,8 +109,11 @@ public class RTContentProvider extends ContentProvider {
 
         Log.d(TAG, "querying " + table + " for event " + uri.getLastPathSegment());
 
-        if (table != null)
-            return dbHelper.getReadableDatabase().query(table, projection, selection, newSelectionArgs, null, null, sortOrder);
+        if (table != null) {
+            Cursor c = dbHelper.getReadableDatabase().query(table, projection, selection, newSelectionArgs, null, null, sortOrder);
+            c.setNotificationUri(getContext().getContentResolver(), notificationUri);
+            return c;
+        }
         return null;
     }
 

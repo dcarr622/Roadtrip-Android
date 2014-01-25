@@ -31,6 +31,7 @@ public class RTOpenHelper extends SQLiteOpenHelper {
 
     public static final String KEY_SOCIAL_SERVICE = "service";
     public static final String KEY_TEXT = "text";
+    public static final String KEY_POSTER = "poster";
 
     private static final String CREATE_TABLE_SOCIAL = "CREATE TABLE " + TABLE_SOCIAL + " (" +
             KEY_ID + " INTEGER PRIMARY KEY," +
@@ -39,7 +40,8 @@ public class RTOpenHelper extends SQLiteOpenHelper {
             KEY_LAT + " REAL," +
             KEY_LNG + " REAL," +
             KEY_TEXT + " TEXT," +
-            KEY_SOCIAL_SERVICE + " TEXT" +
+            KEY_SOCIAL_SERVICE + " TEXT," +
+            KEY_POSTER + " TEXT" +
             ");";
 
     protected static final String TABLE_PHOTO = "photo";
@@ -49,7 +51,7 @@ public class RTOpenHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_PHOTO = "CREATE TABLE " + TABLE_PHOTO + " (" +
             KEY_ID + " INTEGER PRIMARY KEY," +
             KEY_TRIP_ID + " INTEGER NOT NULL," +
-            KEY_TIME + " DATETIME," +
+            KEY_TIME + " DATETIME ," +
             KEY_LAT + " REAL," +
             KEY_LNG + " REAL," +
             KEY_PHOTO_URI + " TEXT" +
@@ -88,21 +90,28 @@ public class RTOpenHelper extends SQLiteOpenHelper {
         values.clear();
 
         values.put(KEY_TRIP_ID, 1);
+        values.put(KEY_LAT, "34.044022");
+        values.put(KEY_LNG, "-118.26641549999998");
 
         values.put(KEY_SOCIAL_SERVICE, "Twitter");
-        values.put(KEY_TEXT, "This is a dumb tweet");
+        values.put(KEY_TEXT, "Foss is Boss");
+        values.put(KEY_POSTER, "David Carr");
         db.insert(TABLE_SOCIAL, null, values);
 
         values.clear();
 
         values.put(KEY_TRIP_ID, 1);
+        values.put(KEY_LAT, "34.044022");
+        values.put(KEY_LNG, "-118.26641549999998");
 
-        values.put(KEY_PHOTO_URI, "file://aphoto");
+        values.put(KEY_PHOTO_URI, "http://vinnie.io/favicon.ico");
         db.insert(TABLE_PHOTO, null, values);
 
         values.clear();
 
         values.put(KEY_TRIP_ID, 1);
+        values.put(KEY_LAT, "34.044022");
+        values.put(KEY_LNG, "-118.26641549999998");
 
         values.put(KEY_NAME, "In-n-Out Burger");
         db.insert(TABLE_LOCATION, null, values);
