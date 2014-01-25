@@ -12,17 +12,20 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.suchroadtrip.app.R;
-import com.suchroadtrip.app.data.TwitterUtil;
 
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 
 /**
@@ -64,7 +67,12 @@ public class LoginActivity extends Activity {
     private static final String APP_SHARED_PREFS = "roadtrip_preferences";
     SharedPreferences sharedPrefs;
     SharedPreferences.Editor editor;
-    private static boolean twitterLoggedIn;
+
+    /* Twitter */
+
+    private static Twitter twitter;
+    protected static final String AUTHENTICATION_URL_KEY = "AUTHENTICATION_URL_KEY";
+    protected static final int LOGIN_TO_TWITTER_REQUEST= 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,15 +114,7 @@ public class LoginActivity extends Activity {
         findViewById(R.id.twitter_sign_in_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                twitterLoggedIn = sharedPrefs.getBoolean("twitterLoggedInState", false);
-                if (!twitterLoggedIn)
-                {
-                    new TwitterAuthenticateTask().execute();
-                }
-                else
-                {
-                    Toast.makeText(getBaseContext(), R.string.twitter_signed_in, Toast.LENGTH_LONG).show();
-                }
+                loginToTwitter();
             }
         });
     }
@@ -278,17 +278,68 @@ public class LoginActivity extends Activity {
         }
     }
 
-    class TwitterAuthenticateTask extends AsyncTask<String, String, RequestToken> {
+    private void loginToTwitter() {
+        GetRequestTokenTask getRequestTokenTask = new GetRequestTokenTask();
+        getRequestTokenTask.execute();
+    }
+
+    private class GetRequestTokenTask extends AsyncTask<Void, Void, Void> {
 
         @Override
-        protected void onPostExecute(RequestToken requestToken) {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(requestToken.getAuthenticationURL()));
-            startActivity(intent);
-        }
+        protected Void doInBackground(Void... voids) {
+            twitter = TwitterFactory.getSingleton();
+            twitter.setOAuthConsumer(
+                    getString(R.string.TWITTER_CONSUMER_KEY),
+                    getString(R.string.TWITTER_CONSUMER_SECRET));
 
-        @Override
-        protected RequestToken doInBackground(String... params) {
-            return TwitterUtil.getInstance().getRequestToken();
+            try {
+                RequestToken requestToken = twitter.getOAuthRequestToken(
+                        getString(R.string.TWITTER_CALLBACK_URL));
+                launchLoginWebView(requestToken);
+            } catch (TwitterException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
     }
+
+    private void launchLoginWebView(RequestToken requestToken) {
+        Intent intent = new Intent(this, LoginToTwitter.class);
+        intent.putExtra(LoginActivity.AUTHENTICATION_URL_KEY, requestToken.getAuthenticationURL());
+        startActivityForResult(intent, LOGIN_TO_TWITTER_REQUEST);
+    }
+
+    // add onActivityResult method to MainActivity
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == LOGIN_TO_TWITTER_REQUEST) {
+            if (resultCode == Activity.RESULT_OK) {
+                getAccessToken(data.getStringExtra(LoginToTwitter.CALLBACK_URL_KEY));
+            }
+        }
+    }
+
+    // getAccessToken also has to be handle in AsyncTask
+    private void getAccessToken(String callbackUrl) {
+        Uri uri = Uri.parse(callbackUrl);
+        String verifier = uri.getQueryParameter("oauth_verifier");
+
+        GetAccessTokenTask getAccessTokenTask = new GetAccessTokenTask();
+        getAccessTokenTask.execute(verifier);
+    }
+
+    private class GetAccessTokenTask extends AsyncTask<String, Void, Void> {
+        @Override
+        protected Void doInBackground(String... strings) {
+            String verifier = strings[0];
+            try {
+                AccessToken accessToken = twitter.getOAuthAccessToken(verifier);
+                Log.d("LoginActivity-Twitter", accessToken.getToken());
+                Log.d("LoginActivity-Twitter", accessToken.getScreenName());
+            } catch (Exception e) {
+                // handle exceptions
+            }
+            return null;
+        }
+    }
+
 }

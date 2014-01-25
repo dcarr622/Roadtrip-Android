@@ -39,18 +39,27 @@
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateVisible" >
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="oauth" android:host="com.suchroadtrip.Twitter_oAuth"  />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="com.suchroadtrip.Twitter_oAuth"
+                    android:scheme="oauth" />
             </intent-filter>
         </activity>
 
         <provider
-            android:authorities="com.suchroadtrip.provider"
             android:name="com.suchroadtrip.lib.RTContentProvider"
+            android:authorities="com.suchroadtrip.provider"
             android:enabled="true"
             android:exported="true" />
+
+        <activity
+            android:name="com.suchroadtrip.app.activities.LoginToTwitter"
+            android:label="@string/title_activity_login_to_twitter" >
+        </activity>
     </application>
 
 </manifest>

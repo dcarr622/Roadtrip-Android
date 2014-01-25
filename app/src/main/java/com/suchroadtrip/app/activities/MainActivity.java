@@ -76,8 +76,8 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-    }
 
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
