@@ -33,7 +33,4 @@ local.properties
 *.swp
 
 
-#gradle
-gradlew
-gradle-wrapper.jar
-gradle-wrapper.properties
+build/
