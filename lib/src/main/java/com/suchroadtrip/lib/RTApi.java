@@ -58,7 +58,7 @@ public class RTApi {
                     connection.setDoOutput(true);
 
                     try {
-                        String params = "username="+username+"&"+"password="+password;
+                        String params = "username=" + username + "&" + "password=" + password;
                         connection.getOutputStream().write(params.getBytes());
 
                         JSONObject response = readJson(connection.getInputStream());
@@ -82,6 +82,10 @@ public class RTApi {
         }.execute();
 
 
+    }
+
+    public static void login(Context context, LoginCallback cb) throws IOException {
+        login(getUsername(context), getPassword(context), cb);
     }
 
     public static void updateLocation(Location loc) {
@@ -138,10 +142,10 @@ public class RTApi {
 
                     //try to relogin
                     if (connection.getResponseCode() == 401) {
-                        login(getUsername(context), getPassword(context), new LoginCallback() {
+                        login(context, new LoginCallback() {
                             @Override
                             public void onLoginComplete(boolean success) {
-                                if(success)
+                                if (success)
                                     startTrip(context, name, start, end, cb);
                             }
                         });
@@ -149,7 +153,7 @@ public class RTApi {
 
                     JSONObject response = readJson(connection.getInputStream());
 
-                    Log.d(TAG, "trip response:"+response.toString());
+                    Log.d(TAG, "trip response:" + response.toString());
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -178,11 +182,11 @@ public class RTApi {
         return new JSONObject(data);
     }
 
-    private static String getUsername(Context ctx){
+    private static String getUsername(Context ctx) {
         return ctx.getSharedPreferences("roadtrip_preferences", Context.MODE_PRIVATE).getString("username", null);
     }
 
-    private static String getPassword(Context ctx){
+    private static String getPassword(Context ctx) {
         return ctx.getSharedPreferences("roadtrip_preferences", Context.MODE_PRIVATE).getString("password", null);
     }
 

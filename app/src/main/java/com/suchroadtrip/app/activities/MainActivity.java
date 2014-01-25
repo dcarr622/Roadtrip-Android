@@ -14,15 +14,12 @@ import android.database.Cursor;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
-
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.suchroadtrip.app.R;
 import com.suchroadtrip.app.data.TripAdapter;
@@ -94,7 +91,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
 
 
         try {
-            RTApi.login("vmagro", "wowsuchapp", this);
+            RTApi.login(this, this);
         } catch (IOException e) {
             e.printStackTrace();
         }
