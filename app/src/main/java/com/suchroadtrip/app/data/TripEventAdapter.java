@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.suchroadtrip.app.R;
+import com.suchroadtrip.lib.CircleTransform;
 import com.suchroadtrip.lib.RTOpenHelper;
 import com.suchroadtrip.lib.Util;
 
@@ -57,7 +58,7 @@ public class TripEventAdapter extends CursorAdapter {
             if (tag.map != null){
                 String url = Util.buildMapUrl(c.getDouble(c.getColumnIndex(RTOpenHelper.KEY_LAT)), c.getDouble(c.getColumnIndex(RTOpenHelper.KEY_LNG)));
                 Log.d(TAG, url);
-                picasso.load(url).into(tag.map);
+                picasso.load(url).transform(new CircleTransform()).into(tag.map);
             }
 
             switch (tag.getType()) {

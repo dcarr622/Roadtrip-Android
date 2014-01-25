@@ -8,7 +8,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/mapImage"
-        android:background="@drawable/zoll" />
+        android:src="@drawable/zoll" />
 
     <LinearLayout
         android:orientation="vertical"

@@ -11,25 +11,27 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-
-import android.graphics.Typeface;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.suchroadtrip.app.R;
 import com.suchroadtrip.app.data.TripAdapter;
 import com.suchroadtrip.app.fragments.RoadtripFeedFragment;
 import com.suchroadtrip.app.fragments.RoadtripMapFragment;
+import com.suchroadtrip.lib.RTApi;
 import com.suchroadtrip.lib.RTContentProvider;
 
+import java.io.IOException;
 import java.util.Locale;
 
-public class MainActivity extends Activity implements ActionBar.OnNavigationListener, LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivity extends Activity implements ActionBar.OnNavigationListener, LoaderManager.LoaderCallbacks<Cursor>, RTApi.LoginCallback {
 
     private static final String TAG = "wowsuchtag";
 
@@ -87,6 +89,24 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         mViewPager = (ViewPager) findViewById(R.id.main_pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+
+        try {
+            RTApi.login(this, this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        LocationManager mgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        String provider = mgr.getBestProvider(criteria, true);
+        Location loc = mgr.getLastKnownLocation(provider);
+        RTApi.startTrip(this, "Test Trip", loc, "Las Vegas", new RTApi.StartTripCallback() {
+            @Override
+            public void tripStarted(int id) {
+                Log.d(TAG, "started trip with id " + id);
+            }
+        });
+
     }
 
     @Override
@@ -132,6 +152,11 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
 
+    }
+
+    @Override
+    public void onLoginComplete(boolean success) {
+        Log.d(TAG, "RTApi login success:" + success);
     }
 
     /**
