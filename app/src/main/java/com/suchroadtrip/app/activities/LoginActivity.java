@@ -19,14 +19,13 @@ import android.view.Menu;
 import com.suchroadtrip.app.R;
 import com.suchroadtrip.app.fragments.LoginFragment;
 import com.suchroadtrip.app.fragments.RegisterFragment;
+import com.suchroadtrip.app.fragments.SocialFragment;
 
 import java.util.Locale;
 
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
-import twitter4j.auth.RequestToken;
+
+import static com.suchroadtrip.app.fragments.SocialFragment.twitter;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -39,15 +38,12 @@ public class LoginActivity extends Activity implements ActionBar.TabListener {
      */
     public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
 
+    public static final String AUTHENTICATION_URL_KEY = "AUTHENTICATION_URL_KEY";
+    public static final int LOGIN_TO_TWITTER_REQUEST = 0;
+
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-
-    /* Twitter */
-
-    private static Twitter twitter;
-    protected static final String AUTHENTICATION_URL_KEY = "AUTHENTICATION_URL_KEY";
-    protected static final int LOGIN_TO_TWITTER_REQUEST= 0;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -121,36 +117,19 @@ public class LoginActivity extends Activity implements ActionBar.TabListener {
         return true;
     }
 
-
-    private void loginToTwitter() {
-        GetRequestTokenTask getRequestTokenTask = new GetRequestTokenTask();
-        getRequestTokenTask.execute();
+    @Override
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+        // When the given tab is selected, switch to the corresponding page in
+        // the ViewPager.
+        mViewPager.setCurrentItem(tab.getPosition());
     }
 
-    private class GetRequestTokenTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            twitter = TwitterFactory.getSingleton();
-            twitter.setOAuthConsumer(
-                    getString(R.string.TWITTER_CONSUMER_KEY),
-                    getString(R.string.TWITTER_CONSUMER_SECRET));
-
-            try {
-                RequestToken requestToken = twitter.getOAuthRequestToken(
-                        getString(R.string.TWITTER_CALLBACK_URL));
-                launchLoginWebView(requestToken);
-            } catch (TwitterException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
+    @Override
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
 
-    private void launchLoginWebView(RequestToken requestToken) {
-        Intent intent = new Intent(this, LoginToTwitter.class);
-        intent.putExtra(LoginActivity.AUTHENTICATION_URL_KEY, requestToken.getAuthenticationURL());
-        startActivityForResult(intent, LOGIN_TO_TWITTER_REQUEST);
+    @Override
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
 
     // add onActivityResult method to MainActivity
@@ -169,36 +148,6 @@ public class LoginActivity extends Activity implements ActionBar.TabListener {
 
         GetAccessTokenTask getAccessTokenTask = new GetAccessTokenTask();
         getAccessTokenTask.execute(verifier);
-    }
-
-    private class GetAccessTokenTask extends AsyncTask<String, Void, Void> {
-        @Override
-        protected Void doInBackground(String... strings) {
-            String verifier = strings[0];
-            try {
-                AccessToken accessToken = twitter.getOAuthAccessToken(verifier);
-                Log.d("LoginActivity-Twitter", accessToken.getToken());
-                Log.d("LoginActivity-Twitter", accessToken.getScreenName());
-            } catch (Exception e) {
-                // handle exceptions
-            }
-            return null;
-        }
-    }
-
-    @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        // When the given tab is selected, switch to the corresponding page in
-        // the ViewPager.
-        mViewPager.setCurrentItem(tab.getPosition());
-    }
-
-    @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-    }
-
-    @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
 
     /**
@@ -220,23 +169,42 @@ public class LoginActivity extends Activity implements ActionBar.TabListener {
             if (position == 1) {
                 return RegisterFragment.newInstance();
             }
+            if (position == 2) {
+                return SocialFragment.newInstance();
+            }
             return null;
         }
 
         @Override
         public int getCount() {
             // Show 2 total pages.
-            return 2;
+            return 3;
         }
 
+
+    }
+
+    public CharSequence getPageTitle(int position) {
+        Locale l = Locale.getDefault();
+        switch (position) {
+            case 0:
+                return getString(R.string.login_title).toUpperCase(l);
+            case 1:
+                return getString(R.string.register_title).toUpperCase(l);
+        }
+        return null;
+    }
+
+    public class GetAccessTokenTask extends AsyncTask<String, Void, Void> {
         @Override
-        public CharSequence getPageTitle(int position) {
-            Locale l = Locale.getDefault();
-            switch (position) {
-                case 0:
-                    return getString(R.string.login_title).toUpperCase(l);
-                case 1:
-                    return getString(R.string.register_title).toUpperCase(l);
+        protected Void doInBackground(String... strings) {
+            String verifier = strings[0];
+            try {
+                AccessToken accessToken = twitter.getOAuthAccessToken(verifier);
+                Log.d("LoginActivity-Twitter", accessToken.getToken());
+                Log.d("LoginActivity-Twitter", accessToken.getScreenName());
+            } catch (Exception e) {
+                // handle exceptions
             }
             return null;
         }
