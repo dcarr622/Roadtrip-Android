@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.suchroadtrip.app.R;
 import com.suchroadtrip.lib.RTOpenHelper;
+import com.suchroadtrip.lib.Util;
 
 /**
  * Created by david on 1/25/14.
@@ -21,8 +22,6 @@ import com.suchroadtrip.lib.RTOpenHelper;
 public class TripEventAdapter extends CursorAdapter {
 
     private static final String TAG = "TripEventAdapter";
-
-    private static final String FORMAT_MAP_URL = "http://maps.googleapis.com/maps/api/staticmap?center=%f,%f&zoom=13&size=100x100&key=AIzaSyCAJbA5io-Jb97Y-vwSNJI6y64DcCyAZoE&sensor=false";
 
     public TripEventAdapter(Context context, Cursor cursor) {
         super(context, cursor, 0);
@@ -56,7 +55,7 @@ public class TripEventAdapter extends CursorAdapter {
             Picasso picasso = Picasso.with(context);
 
             if (tag.map != null){
-                String url = String.format(FORMAT_MAP_URL, c.getDouble(c.getColumnIndex(RTOpenHelper.KEY_LAT)), c.getDouble(c.getColumnIndex(RTOpenHelper.KEY_LNG)));
+                String url = Util.buildMapUrl(c.getDouble(c.getColumnIndex(RTOpenHelper.KEY_LAT)), c.getDouble(c.getColumnIndex(RTOpenHelper.KEY_LNG)));
                 Log.d(TAG, url);
                 picasso.load(url).into(tag.map);
             }
