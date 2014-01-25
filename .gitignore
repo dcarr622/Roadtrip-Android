@@ -31,3 +31,9 @@ local.properties
 *.ipr
 *~
 *.swp
+
+
+#gradle
+gradlew
+gradle-wrapper.jar
+gradle-wrapper.properties
