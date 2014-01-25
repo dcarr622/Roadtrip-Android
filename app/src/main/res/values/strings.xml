@@ -13,5 +13,6 @@
     <string name="TWITTER_CONSUMER_SECRET">LUz9s7ZR0JfPHspbbJ8t3iptojl26qbHwk2hZzlCXEY</string>
     <string name="TWITTER_CALLBACK_URL">http://suchroadtrip.com/</string>
     <string name="title_activity_login_to_twitter">LoginToTwitter</string>
+    <string name="twitter_webview_title">Authorize Twitter</string>
 
 </resources>

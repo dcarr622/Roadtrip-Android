@@ -1,5 +1,6 @@
 package com.suchroadtrip.app.activities;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +25,9 @@ public class LoginToTwitter extends Activity {
         WebView webView = (WebView) findViewById(R.id.webViewLoginToTwitter);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new LoginToTwitterWebViewClient());
+
+        ActionBar actionBar = getActionBar();
+        actionBar.setTitle(R.string.twitter_webview_title);
 
         webView.loadUrl(mUrl);
     }
