@@ -122,7 +122,6 @@ public class LoginActivity extends Activity implements ActionBar.TabListener {
     }
 
 
-
     private void loginToTwitter() {
         GetRequestTokenTask getRequestTokenTask = new GetRequestTokenTask();
         getRequestTokenTask.execute();

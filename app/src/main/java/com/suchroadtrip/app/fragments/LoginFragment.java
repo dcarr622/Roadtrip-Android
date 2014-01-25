@@ -218,6 +218,11 @@ public class LoginFragment extends Fragment {
             nameValuePairs.add(new BasicNameValuePair("username", mUser));
             nameValuePairs.add(new BasicNameValuePair("password", mPassword));
 
+            editor = LoginActivity.sharedPrefs.edit();
+            editor.putString("username", mUser);
+            editor.putString("password", mPassword);
+            editor.commit();
+
             HttpResponse response = null;
             HttpEntity entity = null;
             List<Cookie> cookiejar = null;
