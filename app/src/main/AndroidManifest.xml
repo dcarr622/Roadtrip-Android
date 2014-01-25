@@ -38,6 +38,12 @@
             android:name="com.suchroadtrip.app.activities.LoginActivity"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateVisible" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="oauth" android:host="com.suchroadtrip.Twitter_oAuth"  />
+            </intent-filter>
         </activity>
 
         <provider

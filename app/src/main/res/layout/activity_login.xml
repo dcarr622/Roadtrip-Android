@@ -63,6 +63,17 @@
                 android:paddingRight="32dp"
                 android:layout_gravity="right" />
 
+            <Button
+                android:id="@+id/twitter_sign_in_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/login_with_twitter"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp"
+            android:layout_gravity="right" />
+
+
         </LinearLayout>
 
     </ScrollView>

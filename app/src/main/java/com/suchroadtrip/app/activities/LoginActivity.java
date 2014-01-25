@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,8 +18,12 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.suchroadtrip.app.R;
+import com.suchroadtrip.app.data.TwitterUtil;
+
+import twitter4j.auth.RequestToken;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -59,6 +64,7 @@ public class LoginActivity extends Activity {
     private static final String APP_SHARED_PREFS = "roadtrip_preferences";
     SharedPreferences sharedPrefs;
     SharedPreferences.Editor editor;
+    private static boolean twitterLoggedIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +100,21 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View view) {
                 attemptLogin();
+            }
+        });
+
+        findViewById(R.id.twitter_sign_in_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                twitterLoggedIn = sharedPrefs.getBoolean("twitterLoggedInState", false);
+                if (!twitterLoggedIn)
+                {
+                    new TwitterAuthenticateTask().execute();
+                }
+                else
+                {
+                    Toast.makeText(getBaseContext(), R.string.twitter_signed_in, Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -254,6 +275,20 @@ public class LoginActivity extends Activity {
         protected void onCancelled() {
             mAuthTask = null;
             showProgress(false);
+        }
+    }
+
+    class TwitterAuthenticateTask extends AsyncTask<String, String, RequestToken> {
+
+        @Override
+        protected void onPostExecute(RequestToken requestToken) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(requestToken.getAuthenticationURL()));
+            startActivity(intent);
+        }
+
+        @Override
+        protected RequestToken doInBackground(String... params) {
+            return TwitterUtil.getInstance().getRequestToken();
         }
     }
 }
