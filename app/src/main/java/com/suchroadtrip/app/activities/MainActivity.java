@@ -7,7 +7,9 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -40,9 +42,24 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
      */
     ViewPager mViewPager;
 
+    /*For checking user logged-in status*/
+    private static final String APP_SHARED_PREFS = "roadtrip_preferences";
+    SharedPreferences sharedPrefs;
+    SharedPreferences.Editor editor;
+    private static boolean isLoggedIn = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
+        isLoggedIn = sharedPrefs.getBoolean("userLoggedInState", false);
+
+        if (!isLoggedIn) {
+            Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+            MainActivity.this.startActivity(loginIntent);
+        }
+
         setContentView(R.layout.activity_main);
 
         // Set up the action bar.

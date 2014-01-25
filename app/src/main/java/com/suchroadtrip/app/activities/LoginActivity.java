@@ -4,6 +4,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -52,11 +55,19 @@ public class LoginActivity extends Activity {
     private View mLoginStatusView;
     private TextView mLoginStatusMessageView;
 
+    /*Shared prefs*/
+    private static final String APP_SHARED_PREFS = "roadtrip_preferences";
+    SharedPreferences sharedPrefs;
+    SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
+
+        /*Get shared prefs*/
+        sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
 
         // Set up the login form.
         mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
@@ -227,6 +238,12 @@ public class LoginActivity extends Activity {
 
             if (success) {
                 finish();
+                editor = sharedPrefs.edit();
+                editor.putBoolean("userLoggedInState", true);
+//                editor.putInt("currentLoggedInUserId", userId);
+                editor.commit();
+                Intent mainActivityIntent = new Intent(LoginActivity.this,MainActivity.class);
+                LoginActivity.this.startActivity(mainActivityIntent);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
