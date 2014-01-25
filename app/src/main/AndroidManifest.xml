@@ -60,6 +60,13 @@
             android:name="com.suchroadtrip.app.activities.LoginToTwitter"
             android:label="@string/title_activity_login_to_twitter" >
         </activity>
+
+        <receiver android:name="NewPhotoReceiver">
+            <intent-filter>
+                <action android:name="com.android.camera.NEW_PICTURE"/>
+                <data android:mimeType="image/*"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
