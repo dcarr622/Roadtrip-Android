@@ -5,8 +5,11 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
@@ -42,9 +45,24 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
      */
     ViewPager mViewPager;
 
+    /*For checking user logged-in status*/
+    private static final String APP_SHARED_PREFS = "roadtrip_preferences";
+    SharedPreferences sharedPrefs;
+    SharedPreferences.Editor editor;
+    private static boolean isLoggedIn = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
+        isLoggedIn = sharedPrefs.getBoolean("userLoggedInState", false);
+
+        if (!isLoggedIn) {
+            Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+            MainActivity.this.startActivity(loginIntent);
+        }
+
         setContentView(R.layout.activity_main);
 
         getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
@@ -89,7 +107,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
-        switch(id){
+        switch (id) {
             case 0:
                 return new CursorLoader(this, RTContentProvider.TRIP_URI, null, null, null, null);
         }
