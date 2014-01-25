@@ -39,6 +39,12 @@
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
+
+        <provider
+            android:authorities="com.suchroadtrip.provider"
+            android:name="com.suchroadtrip.lib.RTContentProvider"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>
