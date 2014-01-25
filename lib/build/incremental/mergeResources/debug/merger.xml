@@ -10,10 +10,10 @@
                 </string>
             </file>
         </source>
-        <source path="/home/david/Roadtrip-Android/lib/build/res/rs/release" />
+        <source path="/home/david/Roadtrip-Android/lib/build/res/rs/debug" />
     </dataSet>
-    <dataSet config="release" >
-        <source path="/home/david/Roadtrip-Android/lib/src/release/res" />
+    <dataSet config="debug" >
+        <source path="/home/david/Roadtrip-Android/lib/src/debug/res" />
     </dataSet>
 
 </merger>

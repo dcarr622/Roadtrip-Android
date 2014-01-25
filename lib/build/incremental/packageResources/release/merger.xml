@@ -6,7 +6,7 @@
             <file
                 path="/home/david/Roadtrip-Android/lib/src/main/res/values/strings.xml"
                 qualifiers="" >
-                <string name="app_name" >My Module
+                <string name="app_name" >#wowsuchlib
                 </string>
             </file>
         </source>
