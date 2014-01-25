@@ -266,8 +266,6 @@ public class LoginFragment extends Fragment {
                     return false;
                 }
             }
-
-            // TODO: register the new account here.
             return true;
         }
 
