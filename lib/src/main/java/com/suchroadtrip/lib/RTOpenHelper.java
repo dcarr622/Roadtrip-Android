@@ -1,5 +1,6 @@
 package com.suchroadtrip.lib;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -37,8 +38,8 @@ public class RTOpenHelper extends SQLiteOpenHelper {
             KEY_TRIP_ID + " INTEGER" +
             KEY_TIME + " DATETIME," +
             KEY_LAT + " REAL," +
-            KEY_LNG + "REAL," +
-            KEY_TEXT + "TEXT," +
+            KEY_LNG + " REAL," +
+            KEY_TEXT + " TEXT," +
             KEY_SOCIAL_SERVICE + "TEXT" +
             ");";
 
@@ -51,8 +52,8 @@ public class RTOpenHelper extends SQLiteOpenHelper {
             KEY_TRIP_ID + " INTEGER" +
             KEY_TIME + " DATETIME," +
             KEY_LAT + " REAL," +
-            KEY_LNG + "REAL," +
-            KEY_PHOTO_URI + " STRING" +
+            KEY_LNG + " REAL," +
+            KEY_PHOTO_URI + " TEXT" +
             ");";
 
 
@@ -63,7 +64,7 @@ public class RTOpenHelper extends SQLiteOpenHelper {
             KEY_TRIP_ID + " INTEGER" +
             KEY_TIME + " DATETIME," +
             KEY_LAT + " REAL," +
-            KEY_LNG + "REAL," +
+            KEY_LNG + " REAL" +
             ");";
 
     public RTOpenHelper(Context context) {
@@ -76,6 +77,13 @@ public class RTOpenHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_SOCIAL);
         db.execSQL(CREATE_TABLE_PHOTO);
         db.execSQL(CREATE_TABLE_LOCATION);
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_NAME, "Hello world");
+        db.insert(TABLE_TRIPS, null, values);
+        values.clear();
+        values.put(KEY_NAME, "Trip 2");
+        db.insert(TABLE_TRIPS, null, values);
     }
 
     @Override

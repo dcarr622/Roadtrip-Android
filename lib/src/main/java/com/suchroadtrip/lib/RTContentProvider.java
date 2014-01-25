@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
 
 import java.util.Arrays;
 
@@ -12,6 +13,8 @@ import java.util.Arrays;
  * Created by vmagro on 1/24/14.
  */
 public class RTContentProvider extends ContentProvider {
+
+    private static final String TAG = "suchcontent";
 
     public static final String AUTHORITY = "com.suchroadtrip.provider";
 
@@ -50,6 +53,7 @@ public class RTContentProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         dbHelper = new RTOpenHelper(getContext());
+        Log.i(TAG, "onCreate");
         return true;
     }
 
@@ -78,6 +82,8 @@ public class RTContentProvider extends ContentProvider {
         String[] newSelectionArgs = Arrays.copyOf(selectionArgs, selectionArgs.length + 1);
         newSelectionArgs[newSelectionArgs.length - 1] = uri.getLastPathSegment();
         //end trip id selection section
+
+        Log.d(TAG, "querying " + table);
 
         if (table != null)
             return dbHelper.getReadableDatabase().query(table, projection, selection, selectionArgs, null, null, sortOrder);
