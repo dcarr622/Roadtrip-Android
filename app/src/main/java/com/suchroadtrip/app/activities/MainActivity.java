@@ -57,6 +57,8 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
 
         sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
         isLoggedIn = sharedPrefs.getBoolean("userLoggedInState", false);
+        //TODO remove this
+        isLoggedIn = true;
 
         if (!isLoggedIn) {
             Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
@@ -81,7 +83,6 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
@@ -143,7 +144,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
                 return RoadtripMapFragment.newInstance();
             }
             if (position == 1) {
-                return RoadtripFeedFragment.newInstance();
+                return RoadtripFeedFragment.newInstance(1);
             }
             return null;
         }

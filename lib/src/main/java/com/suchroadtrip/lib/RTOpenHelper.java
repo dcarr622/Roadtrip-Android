@@ -18,10 +18,9 @@ public class RTOpenHelper extends SQLiteOpenHelper {
     public static final String KEY_LAT = "lat";
     public static final String KEY_LNG = "lng";
     public static final String KEY_TRIP_ID = "trip";
+    public static final String KEY_NAME = "name";
 
     protected static final String TABLE_TRIPS = "trip";
-
-    public static final String KEY_NAME = "name";
 
     private static final String CREATE_TABLE_TRIPS = "CREATE TABLE " + TABLE_TRIPS + " (" +
             KEY_ID + " INTEGER PRIMARY KEY," +
@@ -35,12 +34,12 @@ public class RTOpenHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_SOCIAL = "CREATE TABLE " + TABLE_SOCIAL + " (" +
             KEY_ID + " INTEGER PRIMARY KEY," +
-            KEY_TRIP_ID + " INTEGER" +
+            KEY_TRIP_ID + " INTEGER NOT NULL," +
             KEY_TIME + " DATETIME," +
             KEY_LAT + " REAL," +
             KEY_LNG + " REAL," +
             KEY_TEXT + " TEXT," +
-            KEY_SOCIAL_SERVICE + "TEXT" +
+            KEY_SOCIAL_SERVICE + " TEXT" +
             ");";
 
     protected static final String TABLE_PHOTO = "photo";
@@ -49,7 +48,7 @@ public class RTOpenHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_PHOTO = "CREATE TABLE " + TABLE_PHOTO + " (" +
             KEY_ID + " INTEGER PRIMARY KEY," +
-            KEY_TRIP_ID + " INTEGER" +
+            KEY_TRIP_ID + " INTEGER NOT NULL," +
             KEY_TIME + " DATETIME," +
             KEY_LAT + " REAL," +
             KEY_LNG + " REAL," +
@@ -61,8 +60,9 @@ public class RTOpenHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_LOCATION = "CREATE TABLE " + TABLE_LOCATION + " (" +
             KEY_ID + " INTEGER PRIMARY KEY," +
-            KEY_TRIP_ID + " INTEGER" +
+            KEY_TRIP_ID + " INTEGER NOT NULL," +
             KEY_TIME + " DATETIME," +
+            KEY_NAME + " TEXT," +
             KEY_LAT + " REAL," +
             KEY_LNG + " REAL" +
             ");";
@@ -84,6 +84,28 @@ public class RTOpenHelper extends SQLiteOpenHelper {
         values.clear();
         values.put(KEY_NAME, "Trip 2");
         db.insert(TABLE_TRIPS, null, values);
+
+        values.clear();
+
+        values.put(KEY_TRIP_ID, 1);
+
+        values.put(KEY_SOCIAL_SERVICE, "Twitter");
+        values.put(KEY_TEXT, "This is a dumb tweet");
+        db.insert(TABLE_SOCIAL, null, values);
+
+        values.clear();
+
+        values.put(KEY_TRIP_ID, 1);
+
+        values.put(KEY_PHOTO_URI, "file://aphoto");
+        db.insert(TABLE_PHOTO, null, values);
+
+        values.clear();
+
+        values.put(KEY_TRIP_ID, 1);
+
+        values.put(KEY_NAME, "In-n-Out Burger");
+        db.insert(TABLE_LOCATION, null, values);
     }
 
     @Override
