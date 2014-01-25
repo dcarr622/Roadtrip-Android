@@ -17,6 +17,11 @@ public class RTContentProvider extends ContentProvider {
 
     private static final Uri baseUri = Uri.parse("content://" + AUTHORITY + "/");
 
+    public static final Uri TRIP_URI = Uri.withAppendedPath(baseUri, RTOpenHelper.TABLE_TRIPS);
+    public static final Uri SOCIAL_URI = Uri.withAppendedPath(baseUri, RTOpenHelper.TABLE_SOCIAL);
+    public static final Uri LOCATION_URI = Uri.withAppendedPath(baseUri, RTOpenHelper.TABLE_LOCATION);
+    public static final Uri PHOTO_URI = Uri.withAppendedPath(baseUri, RTOpenHelper.TABLE_PHOTO);
+
     private static final int MATCH_TRIP = 1;
     private static final int MATCH_SOCIAL_UPDATE_TRIP = 2;
     private static final int MATCH_PHOTO_TRIP = 3;
