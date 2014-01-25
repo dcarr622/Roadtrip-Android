@@ -22,9 +22,22 @@ public class RTOpenHelper extends SQLiteOpenHelper {
 
     protected static final String TABLE_TRIPS = "trip";
 
+    public static final String KEY_START_LAT = "start_lat";
+    public static final String KEY_START_LNG = "start_lng";
+    public static final String KEY_END_LAT = "end_lat";
+    public static final String KEY_END_LNG = "end_lng";
+    public static final String KEY_START_CITY = "start_city";
+    public static final String KEY_END_CITY = "end_city";
+
     private static final String CREATE_TABLE_TRIPS = "CREATE TABLE " + TABLE_TRIPS + " (" +
             KEY_ID + " INTEGER PRIMARY KEY," +
-            KEY_NAME + " TEXT" +
+            KEY_NAME + " TEXT," +
+            KEY_START_LAT + " REAL," +
+            KEY_START_LNG + " REAL," +
+            KEY_END_LAT + " REAL," +
+            KEY_END_LNG + " REAL," +
+            KEY_START_CITY + " TEXT," +
+            KEY_END_CITY + " TEXT" +
             ");";
 
     protected static final String TABLE_SOCIAL = "social";
