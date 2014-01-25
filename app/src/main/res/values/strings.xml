@@ -17,5 +17,8 @@
     <string name="roadtrip_login_url">http://suchroadtrip.com/users/login</string>
     <string name="roadtrip_signup_url">http://suchroadtrip.com/users/signup</string>
     <string name="roadtrip_user_check">http://suchroadtrip.com/users/currentUser</string>
+    <string name="login_title">Log In</string>
+    <string name="register_title">Register</string>
+    <string name="prompt_user">User</string>
 
 </resources>
