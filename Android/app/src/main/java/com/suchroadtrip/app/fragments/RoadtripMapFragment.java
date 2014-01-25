@@ -1,4 +1,4 @@
-package fragments;
+package com.suchroadtrip.app.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -17,5 +17,9 @@ public class RoadtripMapFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_roadtripmap, container, false);
+    }
+
+    public static Fragment newInstance() {
+        return new RoadtripMapFragment();
     }
 }
