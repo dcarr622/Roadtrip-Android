@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.suchroadtrip.app.R;
 
+import com.suchroadtrip.app.fragments.RoadtripFeedFragment;
 import com.suchroadtrip.app.fragments.RoadtripMapFragment;
 
 public class MainActivity extends Activity implements ActionBar.TabListener {
@@ -132,7 +133,10 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
             if (position == 0) {
                 return RoadtripMapFragment.newInstance();
             }
-            return PlaceholderFragment.newInstance(position + 1);
+            if (position == 1) {
+                return RoadtripFeedFragment.newInstance();
+            }
+            return null;
         }
 
         @Override
@@ -151,41 +155,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
                     return getString(R.string.title_feed).toUpperCase(l);
             }
             return null;
-        }
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
         }
     }
 
