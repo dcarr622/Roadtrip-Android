@@ -3,6 +3,8 @@
 
     <application android:allowBackup="true" android:label="@string/app_name">
 
+        <provider android:authorities="com.suchroadtrip.provider" android:enabled="true" android:exported="true" android:name="com.suchroadtrip.lib.RTContentProvider"/>
+
     </application>
 
 </manifest>
