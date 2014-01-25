@@ -61,7 +61,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
         isLoggedIn = sharedPrefs.getBoolean("userLoggedInState", false);
         //TODO remove this
-        isLoggedIn = true;
+//        isLoggedIn = true;
 
         if (!isLoggedIn) {
             Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
