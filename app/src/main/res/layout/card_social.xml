@@ -22,19 +22,11 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="20dp" />
 
-        <FrameLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="20dp">
-
-            <com.google.android.gms.maps.MapView
-                android:layout_width="fill_parent"
-                android:layout_height="225dp"
-                android:id="@+id/map_view"
-                android:layout_gravity="center_horizontal|bottom"
-                android:src="@drawable/placeholder2"
-                android:cropToPadding="false"
-                android:baselineAlignBottom="false" />
 
             <LinearLayout
                 android:orientation="vertical"
@@ -107,20 +99,35 @@
                         android:layout_height="10dp"
                         android:background="@color/white"
                         android:layout_gravity="center_horizontal|bottom">
-
-
                     </LinearLayout>
                 </FrameLayout>
 
-                <Button
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:rotation="180"
-                    android:background="@drawable/arrow_up"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:layout_marginTop="-10dp" />
+                <FrameLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.gms.maps.MapView
+                        android:layout_width="fill_parent"
+                        android:layout_height="200dp"
+                        android:id="@+id/map_view"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:src="@drawable/placeholder2"
+                        android:cropToPadding="false"
+                        android:baselineAlignBottom="false" />
+
+                    <Button
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:rotation="180"
+                        android:background="@drawable/arrow_up"
+                        android:layout_gravity="center_horizontal|top"
+                        android:layout_marginTop="-10dp" />
+
+                </FrameLayout>
+
+
             </LinearLayout>
 
-        </FrameLayout>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
