@@ -9,10 +9,11 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.suchroadtrip.app.R;
+import com.suchroadtrip.app.fragments.SocialFragment;
 
 public class LoginToTwitter extends Activity {
 
-    protected static final String CALLBACK_URL_KEY = "CALLBACK_URL_KEY";
+    public static final String CALLBACK_URL_KEY = "CALLBACK_URL_KEY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +21,7 @@ public class LoginToTwitter extends Activity {
         setContentView(R.layout.activity_login_to_twitter);
 
         Intent intent = getIntent();
-        String mUrl = intent.getStringExtra(LoginActivity.AUTHENTICATION_URL_KEY);
+        String mUrl = intent.getStringExtra(SocialFragment.AUTHENTICATION_URL_KEY);
 
         WebView webView = (WebView) findViewById(R.id.webViewLoginToTwitter);
         webView.getSettings().setJavaScriptEnabled(true);
@@ -38,8 +39,7 @@ public class LoginToTwitter extends Activity {
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             if (url.startsWith(getString(R.string.TWITTER_CALLBACK_URL))) {
                 Log.d("LoginToTwitter", "shouldOverrideUrlLoading");
-                Intent intent;
-                intent = new Intent();
+                Intent intent = new Intent();
                 intent.putExtra(CALLBACK_URL_KEY, url);
                 setResult(Activity.RESULT_OK, intent);
                 finish();

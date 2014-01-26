@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -24,7 +25,6 @@ import android.widget.TextView;
 
 import com.loopj.android.http.PersistentCookieStore;
 import com.suchroadtrip.app.R;
-import com.suchroadtrip.app.activities.LoginActivity;
 import com.suchroadtrip.app.activities.MainActivity;
 
 import org.apache.http.HttpEntity;
@@ -63,6 +63,10 @@ public class LoginFragment extends Fragment {
         return new LoginFragment();
     }
 
+    /*Shared prefs*/
+    private static final String APP_SHARED_PREFS = "roadtrip_preferences";
+    public static SharedPreferences sharedPrefs;
+
     /* HTTP stuff */
 
     DefaultHttpClient httpClient;
@@ -82,6 +86,9 @@ public class LoginFragment extends Fragment {
         // Set up the login form.
         mUserView = (EditText) view.findViewById(R.id.login_user);
         mUserView.setText(mUser);
+
+          /*Get shared prefs*/
+        sharedPrefs = getActivity().getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
 
         httpClient = new DefaultHttpClient();
         cookieStore = new PersistentCookieStore(getActivity().getApplicationContext());
@@ -241,7 +248,7 @@ public class LoginFragment extends Fragment {
             nameValuePairs.add(new BasicNameValuePair("username", mUser));
             nameValuePairs.add(new BasicNameValuePair("password", mPassword));
 
-            editor = LoginActivity.sharedPrefs.edit();
+            editor = sharedPrefs.edit();
             editor.putString("username", mUser);
             editor.putString("password", mPassword);
             editor.commit();
@@ -271,7 +278,7 @@ public class LoginFragment extends Fragment {
                 // parsing JSON
                 if (status.equals("ok")) {
                     Log.v("Login", "ok");
-                    editor = LoginActivity.sharedPrefs.edit();
+                    editor = sharedPrefs.edit();
                     editor.putString("userCookie", cookiejar.get(0).toString());
                     editor.commit();
 
@@ -283,7 +290,7 @@ public class LoginFragment extends Fragment {
                         JSONObject getResult = new JSONObject(userCheckresp);
                         String username = getResult.getString("username");
                         String userID = getResult.getString("_id");
-                        editor = LoginActivity.sharedPrefs.edit();
+                        editor = sharedPrefs.edit();
                         editor.putString("_id", userID);
                         editor.commit();
                         Log.v("usernameCheck", username);
@@ -308,7 +315,7 @@ public class LoginFragment extends Fragment {
 
             if (success) {
                 getActivity().finish();
-                editor = LoginActivity.sharedPrefs.edit();
+                editor = sharedPrefs.edit();
                 editor.putBoolean("userLoggedInState", true);
 //                editor.putInt("currentLoggedInUserId", userId);
                 editor.commit();
