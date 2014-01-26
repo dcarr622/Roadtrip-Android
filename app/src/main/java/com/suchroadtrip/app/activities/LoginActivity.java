@@ -16,6 +16,16 @@ import android.view.Menu;
 import com.suchroadtrip.app.R;
 import com.suchroadtrip.app.fragments.LoginFragment;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import twitter4j.auth.AccessToken;
 
 import static com.suchroadtrip.app.fragments.SocialFragment.twitter;
@@ -55,6 +65,10 @@ public class LoginActivity extends Activity {
     }
 
     @Override
+    public void onBackPressed() {
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.login, menu);
@@ -86,10 +100,24 @@ public class LoginActivity extends Activity {
             String verifier = strings[0];
             try {
                 AccessToken accessToken = twitter.getOAuthAccessToken(verifier);
-                Log.d("token", accessToken.getToken());
-                Log.d("tokenSecret", accessToken.getTokenSecret());
-                Log.d("userName", accessToken.getScreenName());
-//                Log.d("userID", accessToken.getUserId());
+
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
+                nameValuePairs.add(new BasicNameValuePair("twitterId", String.valueOf(accessToken.getUserId())));
+                nameValuePairs.add(new BasicNameValuePair("twitterUsername", accessToken.getScreenName()));
+                nameValuePairs.add(new BasicNameValuePair("userId", sharedPrefs.getString("_id", "null")));
+                nameValuePairs.add(new BasicNameValuePair("oauthToken", accessToken.getToken()));
+                nameValuePairs.add(new BasicNameValuePair("oauthSecret", accessToken.getTokenSecret()));
+
+                HttpPost postRequest = new HttpPost(getString(R.string.twitter_url));
+                DefaultHttpClient httpClient = new DefaultHttpClient();
+
+                HttpResponse response = null;
+                postRequest.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                response = httpClient.execute(postRequest);
+
+                Log.d("TwitterPost", String.valueOf(response.getStatusLine().getStatusCode()));
+
+
             } catch (Exception e) {
                 // handle exceptions
             }

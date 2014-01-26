@@ -117,7 +117,7 @@ public class RTOpenHelper extends SQLiteOpenHelper {
         values.put(KEY_LAT, "34.044022");
         values.put(KEY_LNG, "-118.26641549999998");
 
-        values.put(KEY_PHOTO_URI, "http://vinnie.io/favicon.ico");
+        values.put(KEY_PHOTO_URI, "http://vinnie.io/me.jpg");
         db.insert(TABLE_PHOTO, null, values);
 
         values.clear();
