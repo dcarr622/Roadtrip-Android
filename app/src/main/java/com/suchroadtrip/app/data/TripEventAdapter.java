@@ -60,6 +60,8 @@ public class TripEventAdapter extends CursorAdapter {
                 picasso.load(url).into(tag.map);
             }
 
+            picasso.load("http://vinnie.io/me.jpg").transform(new CircleTransform()).into(tag.author);
+
             switch (tag.getType()) {
                 case SOCIAL:
                     tag.socialPostText.setText(c.getString(c.getColumnIndex(RTOpenHelper.KEY_TEXT)));
@@ -67,7 +69,7 @@ public class TripEventAdapter extends CursorAdapter {
                     tag.socialNetworkText.setText("via " + c.getString(c.getColumnIndex(RTOpenHelper.KEY_SOCIAL_SERVICE)));
                     break;
                 case PHOTO:
-                    picasso.load(Uri.parse(c.getString(c.getColumnIndex(RTOpenHelper.KEY_PHOTO_URI)))).into(tag.photo);
+                    picasso.load(Uri.parse(c.getString(c.getColumnIndex(RTOpenHelper.KEY_PHOTO_URI)))).resizeDimen(R.dimen.card_photo_size, R.dimen.card_photo_size).into(tag.photo);
                     break;
             }
         }

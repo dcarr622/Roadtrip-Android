@@ -3,7 +3,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#aaaaaa">
+    android:background="#aaaaaa"
+    android:paddingTop="20dp">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -21,20 +22,20 @@
 
         <FrameLayout
             android:layout_width="fill_parent"
-            android:layout_height="300dp">
+            android:layout_height="wrap_content">
 
             <ImageView
-                android:layout_width="200dp"
-                android:layout_height="200dp"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
                 android:id="@+id/map_image"
                 android:layout_gravity="center_horizontal|bottom"
                 android:src="@drawable/placeholder2"
                 android:cropToPadding="false"
-                android:baselineAlignBottom="false" />
+                android:baselineAlignBottom="false"/>
 
             <LinearLayout
                 android:orientation="vertical"
-                android:layout_width="200dp"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|top"
                 android:id="@+id/linearLayout1"
@@ -47,8 +48,8 @@
 
                     <LinearLayout
                         android:orientation="vertical"
-                        android:layout_width="200dp"
-                        android:layout_height="200dp"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
                         android:id="@+id/detail_layout"
                         android:src="@drawable/placeholder1"
                         android:layout_above="@+id/linearLayout"
