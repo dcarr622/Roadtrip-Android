@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 
 import com.suchroadtrip.app.LocationMonitorService;
 import com.suchroadtrip.app.R;
+import com.suchroadtrip.app.activities.MainActivity;
 import com.suchroadtrip.lib.RTApi;
 
 import java.util.ArrayList;
@@ -108,6 +109,7 @@ public class NewTripFragment extends DialogFragment {
 
          /* Show/hide proper menu bar icons */
         getActivity().invalidateOptionsMenu();
+        MainActivity.getInstance().startTimer();
 
         RTApi.startTrip(getActivity(), tripname, loc, destination, new RTApi.StartTripCallback() {
             @Override

@@ -10,11 +10,11 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -32,6 +32,8 @@ import com.suchroadtrip.lib.RTApi;
 import com.suchroadtrip.lib.RTContentProvider;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 public class MainActivity extends Activity implements ActionBar.OnNavigationListener, LoaderManager.LoaderCallbacks<Cursor>, RTApi.LoginCallback {
@@ -47,6 +49,33 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
      * {@link android.support.v13.app.FragmentStatePagerAdapter}.
      */
     SectionsPagerAdapter mSectionsPagerAdapter;
+
+    /*For timer*/
+    Handler timerHandler = null;
+    private Date time = new Date(0);
+    private boolean moving = false;
+    private SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.US);
+    private Runnable everySecond = new Runnable() {
+
+        public void run() {
+            if(moving) {
+                time.setTime(time.getTime() + 1000);
+                setElapsedTime(timeFormat.format(time));
+                timerHandler.postDelayed(this, 1000);
+            }
+        }
+
+    };
+    private static MainActivity instance;
+
+    public static MainActivity getInstance() {
+        return instance;
+    }
+
+    protected void setElapsedTime(String text) {
+        TextView elapsedTime = (TextView) findViewById(R.id.time_elapsed_text_view);
+        elapsedTime.setText(text);
+    }
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -76,6 +105,8 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        instance = this;
+
         sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
         isLoggedIn = sharedPrefs.getBoolean("userLoggedInState", false);
         //TODO remove this
@@ -91,6 +122,8 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        timerHandler = new Handler();
 
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Alegreya.ttf");
         int titleId = getResources().getIdentifier("action_bar_title", "id",
@@ -124,6 +157,17 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         mViewPager = (ViewPager) findViewById(R.id.main_pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+//        startTimer();
+
+    }
+
+    public void startTimer() {
+        moving = true;
+        timerHandler.post(everySecond);
+    }
+
+    protected void stopTimer() {
+        moving = false;
     }
 
     @Override
