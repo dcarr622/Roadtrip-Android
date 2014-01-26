@@ -34,6 +34,7 @@ public class RTApi {
 
     private static URL START_TRIP_URL;
     private static URL LOGIN_URL;
+    private static URL ADD_SPOT_URL;
 
     static {
         CookieManager cookieManager = new CookieManager();
@@ -41,6 +42,7 @@ public class RTApi {
         try {
             START_TRIP_URL = new URL(BASE_URL + "trips");
             LOGIN_URL = new URL(BASE_URL + "users/login");
+            ADD_SPOT_URL = new URL(BASE_URL + "trips/addSpot");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -93,32 +95,63 @@ public class RTApi {
         login(getUsername(context), getPassword(context), cb);
     }
 
-    public static void updateLocation(Location loc) {
+    public static void updateLocation(final String tripId, final Location loc) {
         new AsyncTask<Void, Void, Void>() {
 
             @Override
             protected Void doInBackground(Void... voids) {
+                try {
+                    JSONObject json = new JSONObject();
+                    json.put("id", tripId);
+                    json.put("lat", loc.getLatitude());
+                    json.put("lng", loc.getLongitude());
 
+                    HttpURLConnection connection = (HttpURLConnection) ADD_SPOT_URL.openConnection();
+                    connection.setDoOutput(true);
+                    connection.setRequestMethod("POST");
+                    connection.setRequestProperty("Content-Type", "application/json");
+                    connection.getOutputStream().write(json.toString().getBytes());
+
+                    Log.d(TAG, "addSpot response: " + connection.getResponseCode());
+
+                    Log.d(TAG, "uploading spot: " + json.toString());
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
                 return null;
             }
 
-        };
+        }.execute();
     }
 
-    public static void addPicture(Context ctx, Uri pic, Location loc) {
+    public static void addPicture(Context ctx, String tripId, Uri pic, Location loc) {
         ContentValues cv = new ContentValues();
         cv.put(RTOpenHelper.KEY_PHOTO_URI, pic.toString());
         cv.put(RTOpenHelper.KEY_LAT, loc.getLatitude());
         cv.put(RTOpenHelper.KEY_LNG, loc.getLongitude());
-        cv.put(RTOpenHelper.KEY_TRIP_ID, 1);
+        cv.put(RTOpenHelper.KEY_TRIP_ID, tripId);
         ctx.getContentResolver().insert(RTContentProvider.PHOTO_URI, cv);
+
+        new AsyncTask<Void, Void, Boolean>() {
+
+            @Override
+            protected Boolean doInBackground(Void... voids) {
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+
+            }
+        };
     }
 
     public static void startTrip(final Context context, final String name, final Location start, final String end, final StartTripCallback cb) {
-        new AsyncTask<Void, Void, Integer>() {
+        new AsyncTask<Void, Void, String>() {
 
             @Override
-            protected Integer doInBackground(Void... voids) {
+            protected String doInBackground(Void... voids) {
                 JSONObject json = new JSONObject();
                 try {
                     json.put("name", name);
@@ -159,6 +192,9 @@ public class RTApi {
                     JSONObject response = readJson(connection.getInputStream());
 
                     Log.d(TAG, "trip response:" + response.toString());
+
+                    String id = response.getJSONObject("result").getString("id");
+                    return id;
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -166,11 +202,11 @@ public class RTApi {
             }
 
             @Override
-            protected void onPostExecute(Integer result) {
+            protected void onPostExecute(String result) {
                 if (result != null)
                     cb.tripStarted(result);
                 else
-                    cb.tripStarted(-1);
+                    cb.tripStarted(null);
             }
 
         }.execute();
@@ -196,7 +232,7 @@ public class RTApi {
     }
 
     public static interface StartTripCallback {
-        public void tripStarted(int id);
+        public void tripStarted(String id);
     }
 
     public static interface LoginCallback {

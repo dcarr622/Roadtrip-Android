@@ -23,7 +23,7 @@ public class NewPhotoReceiver extends BroadcastReceiver {
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
         String provider = mgr.getBestProvider(criteria, true);
         Location loc = mgr.getLastKnownLocation(provider);
-        RTApi.addPicture(context, intent.getData(), loc);
+        RTApi.addPicture(context, null, intent.getData(), loc);
     }
 
 }

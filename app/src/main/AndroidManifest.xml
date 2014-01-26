@@ -61,12 +61,19 @@
             android:label="@string/title_activity_login_to_twitter" >
         </activity>
 
-        <receiver android:name="NewPhotoReceiver">
+        <receiver android:name="com.suchroadtrip.app.NewPhotoReceiver" >
             <intent-filter>
-                <action android:name="com.android.camera.NEW_PICTURE"/>
-                <data android:mimeType="image/*"/>
+                <action android:name="com.android.camera.NEW_PICTURE" />
+
+                <data android:mimeType="image/*" />
             </intent-filter>
         </receiver>
+
+        <service
+            android:name="com.suchroadtrip.app.LocationMonitorService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
     </application>
 
 </manifest>
