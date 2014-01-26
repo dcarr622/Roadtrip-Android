@@ -20,6 +20,8 @@ public class RTOpenHelper extends SQLiteOpenHelper {
     public static final String KEY_TRIP_ID = "trip";
     public static final String KEY_NAME = "name";
 
+    public static final String KEY_AUTHOR = "author";
+
     protected static final String TABLE_TRIPS = "trip";
 
     public static final String KEY_START_LAT = "start_lat";
@@ -44,7 +46,6 @@ public class RTOpenHelper extends SQLiteOpenHelper {
 
     public static final String KEY_SOCIAL_SERVICE = "service";
     public static final String KEY_TEXT = "text";
-    public static final String KEY_POSTER = "poster";
 
     private static final String CREATE_TABLE_SOCIAL = "CREATE TABLE " + TABLE_SOCIAL + " (" +
             KEY_ID + " INTEGER PRIMARY KEY," +
@@ -54,7 +55,7 @@ public class RTOpenHelper extends SQLiteOpenHelper {
             KEY_LNG + " REAL," +
             KEY_TEXT + " TEXT," +
             KEY_SOCIAL_SERVICE + " TEXT," +
-            KEY_POSTER + " TEXT" +
+            KEY_AUTHOR + " TEXT" +
             ");";
 
     protected static final String TABLE_PHOTO = "photo";
@@ -64,10 +65,11 @@ public class RTOpenHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_PHOTO = "CREATE TABLE " + TABLE_PHOTO + " (" +
             KEY_ID + " INTEGER PRIMARY KEY," +
             KEY_TRIP_ID + " TEXT NOT NULL," +
-            KEY_TIME + " DATETIME ," +
+            KEY_TIME + " DATETIME," +
             KEY_LAT + " REAL," +
             KEY_LNG + " REAL," +
-            KEY_PHOTO_URI + " TEXT" +
+            KEY_PHOTO_URI + " TEXT," +
+            KEY_AUTHOR + " TEXT" +
             ");";
 
 
@@ -108,7 +110,7 @@ public class RTOpenHelper extends SQLiteOpenHelper {
 
         values.put(KEY_SOCIAL_SERVICE, "Twitter");
         values.put(KEY_TEXT, "Foss is Boss");
-        values.put(KEY_POSTER, "David Carr");
+        values.put(KEY_AUTHOR, "David Carr");
         db.insert(TABLE_SOCIAL, null, values);
 
         values.clear();
