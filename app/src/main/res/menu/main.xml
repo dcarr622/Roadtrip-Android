@@ -2,6 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.suchroadtrip.app.com.suchroadtrip.app.activities.MainActivity" >
 
+    <item android:id="@+id/action_new_trip"
+        android:icon="@android:drawable/ic_menu_directions"
+        android:title="@string/new_trip"
+        android:showAsAction="ifRoom" />
+
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100"

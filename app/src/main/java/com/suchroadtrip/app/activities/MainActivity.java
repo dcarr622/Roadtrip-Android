@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -20,9 +21,11 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.suchroadtrip.app.R;
 import com.suchroadtrip.app.data.TripAdapter;
+import com.suchroadtrip.app.fragments.NewTripFragment;
 import com.suchroadtrip.app.fragments.RoadtripFeedFragment;
 import com.suchroadtrip.app.fragments.RoadtripMapFragment;
 import com.suchroadtrip.lib.RTApi;
@@ -71,11 +74,22 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
             MainActivity.this.startActivity(loginIntent);
         }
 
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Alegreya.ttf");
+        int titleId = getResources().getIdentifier("action_bar_title", "id",
+                "android");
+        TextView actionBarTitle = (TextView) findViewById(titleId);
+        actionBarTitle.setTextColor(getResources().getColor(R.color.white));
+        actionBarTitle.setTypeface(typeface);
+        actionBarTitle.setTextSize(30);
+        actionBarTitle.setPadding(0,0,0,10);
+
+        getActionBar().setDisplayShowHomeEnabled(false);
+
         setContentView(R.layout.activity_main);
 
 //        int titleID = getResources().getIdentifier("action_bar_title", "id", "android);");
 //        TextView titleTextView = (TextView) findViewById(titleID);
-//        Typeface tf = Typeface.createFromAsset(getAssets(), "@asset/AlegreyaSans-Black.ttf");
+//        Typeface tf = Typeface.createFromAsset(getAssets(), "@asset/Alegreya.ttf");
 //       titleTextView.setTypeface(tf);
 
         getLoaderManager().initLoader(0, null, this);
@@ -129,6 +143,11 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+            return true;
+        }
+        if (id == R.id.action_new_trip) {
+            NewTripFragment newTripDialog = new NewTripFragment();
+            newTripDialog.show(getFragmentManager(), "New Trip");
             return true;
         }
         return super.onOptionsItemSelected(item);

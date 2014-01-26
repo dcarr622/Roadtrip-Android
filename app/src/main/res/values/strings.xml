@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Roadtrip</string>
+    <string name="app_name">roadtrip</string>
     <string name="title_map">Map</string>
     <string name="title_feed">Feed</string>
     <string name="action_settings">Settings</string>
@@ -24,5 +24,6 @@
     <string name="prompt_user">User</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="action_sign_in_register">Sign in or Register</string>
+    <string name="new_trip">New Trip</string>
 
 </resources>
