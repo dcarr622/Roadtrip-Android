@@ -194,21 +194,21 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
 
-        if (sharedPrefs.getBoolean("tripActive", false)) {
-            Log.d(TAG, "Trip is active");
-            MenuItem stop = menu.findItem(R.id.action_stop);
-            stop.setVisible(true);
-
-            MenuItem startnew = menu.findItem(R.id.action_new_trip);
-            startnew.setVisible(false);
-        } else if (sharedPrefs.getBoolean("tripActive", true)) {
-            Log.d(TAG, "Trip is not active");
-            MenuItem stop = menu.findItem(R.id.action_stop);
-            stop.setVisible(false);
-
-            MenuItem startnew = menu.findItem(R.id.action_new_trip);
-            startnew.setVisible(true);
-        }
+//        if (sharedPrefs.getBoolean("tripActive", false)) {
+//            Log.d(TAG, "Trip is active");
+//            MenuItem stop = menu.findItem(R.id.action_stop);
+//            stop.setVisible(true);
+//
+//            MenuItem startnew = menu.findItem(R.id.action_new_trip);
+//            startnew.setVisible(false);
+//        } else if (sharedPrefs.getBoolean("tripActive", true)) {
+//            Log.d(TAG, "Trip is not active");
+//            MenuItem stop = menu.findItem(R.id.action_stop);
+//            stop.setVisible(false);
+//
+//            MenuItem startnew = menu.findItem(R.id.action_new_trip);
+//            startnew.setVisible(true);
+//        }
 
         return true;
     }

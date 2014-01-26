@@ -6,14 +6,15 @@
         android:icon="@android:drawable/ic_menu_directions"
         android:title="@string/new_trip"
         android:showAsAction="ifRoom" />
-"
-    <item android:id="@+id/action_stop"
-        android:icon="@android:drawable/ic_menu_close_clear_cancel"
-        android:title="@string/stop_trip"
-        android:showAsAction="ifRoom" />
 
     <item android:id="@+id/action_add_person"
         android:icon="@android:drawable/ic_menu_add"
         android:title="@string/add_person"
         android:showAsAction="ifRoom" />
+
+    <item android:id="@+id/action_stop"
+        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        android:title="@string/stop_trip"
+        android:showAsAction="ifRoom" />
+
 </menu>
