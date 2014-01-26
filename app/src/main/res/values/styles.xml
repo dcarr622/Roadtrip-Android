@@ -3,14 +3,7 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-
     </style>
-
-    <style name="AppTheme.ActionBarStyle" parent="AppTheme">
-        <item name="android:background">@color/google_now_blue</item>
-    </style>
-
-
 
     <style name="LoginFormContainer">
         <item name="android:layout_width">match_parent</item>
