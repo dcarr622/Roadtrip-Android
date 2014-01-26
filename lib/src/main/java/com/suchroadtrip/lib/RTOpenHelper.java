@@ -46,6 +46,7 @@ public class RTOpenHelper extends SQLiteOpenHelper {
 
     public static final String KEY_SOCIAL_SERVICE = "service";
     public static final String KEY_TEXT = "text";
+    public static final String KEY_SOCIAL_ID = "social_id";
 
     private static final String CREATE_TABLE_SOCIAL = "CREATE TABLE " + TABLE_SOCIAL + " (" +
             KEY_ID + " INTEGER PRIMARY KEY," +
@@ -55,7 +56,8 @@ public class RTOpenHelper extends SQLiteOpenHelper {
             KEY_LNG + " REAL," +
             KEY_TEXT + " TEXT," +
             KEY_SOCIAL_SERVICE + " TEXT," +
-            KEY_AUTHOR + " TEXT" +
+            KEY_AUTHOR + " TEXT," +
+            KEY_SOCIAL_ID + " TEXT UNIQUE NOT NULL" +
             ");";
 
     protected static final String TABLE_PHOTO = "photo";

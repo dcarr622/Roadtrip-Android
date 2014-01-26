@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,6 +37,7 @@ public class RTApi {
     private static URL LOGIN_URL;
     private static URL ADD_SPOT_URL;
     private static URL GRANT_ACCESS_URL;
+    private static String GET_MEDIA_URL = BASE_URL + "trips/media?id=";
 
     private static Location lastLocation = null;
 
@@ -220,9 +222,9 @@ public class RTApi {
             protected void onPostExecute(String result) {
                 if (cb != null) {
                     if (result != null)
-                        cb.tripStarted(context, result);
+                        cb.tripStarted(result);
                     else
-                        cb.tripStarted(context, null);
+                        cb.tripStarted(null);
                 }
             }
 
@@ -258,6 +260,47 @@ public class RTApi {
         }.execute();
     }
 
+    public static void loadMedia(final Context context, final String id) {
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                try {
+                    URL url = new URL(GET_MEDIA_URL + id);
+                    Log.d(TAG, url.toString());
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestProperty("Content-Type", "application/json");
+
+                    JSONObject response = readJson(connection.getInputStream());
+
+                    JSONArray results = response.getJSONArray("results");
+                    ContentValues contentValues[] = new ContentValues[results.length()];
+                    for (int i = 0; i < results.length(); i++) {
+                        JSONObject json = results.getJSONObject(i);
+                        contentValues[i] = new ContentValues();
+                        contentValues[i].put(RTOpenHelper.KEY_SOCIAL_SERVICE, json.getString("medium"));
+                        JSONArray latlng = json.getJSONArray("latlng");
+                        if (latlng.length() > 0) {
+                            contentValues[i].put(RTOpenHelper.KEY_LAT, latlng.getDouble(0));
+                            contentValues[i].put(RTOpenHelper.KEY_LNG, latlng.getDouble(1));
+                        }
+                        contentValues[i].put(RTOpenHelper.KEY_TEXT, json.getString("text"));
+                        contentValues[i].put(RTOpenHelper.KEY_TRIP_ID, id);
+                        contentValues[i].put(RTOpenHelper.KEY_SOCIAL_ID, json.getString("_id"));
+                    }
+
+                    context.getContentResolver().bulkInsert(RTContentProvider.SOCIAL_URI, contentValues);
+
+                    Log.d(TAG, "loadMedia response: " + connection.getResponseCode());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                return null;
+            }
+
+        }.execute();
+    }
+
     public static JSONObject readJson(InputStream inputStream) throws IOException, JSONException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         String line = null;
@@ -278,7 +321,7 @@ public class RTApi {
     }
 
     public static interface StartTripCallback {
-        public void tripStarted(Context context, String id);
+        public void tripStarted(String id);
     }
 
     public static interface LoginCallback {
