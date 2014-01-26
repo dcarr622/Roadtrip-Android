@@ -21,7 +21,7 @@
     <string name="register_title">Register</string>
     <string name="create_account">Don\'t have an account? Let\'s make one!</string>
     <string name="social_title">Social</string>
-    <string name="prompt_user">User</string>
+    <string name="prompt_user">Username</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="action_sign_in_register">Sign in or Register</string>
     <string name="new_trip">New Trip</string>

@@ -3,7 +3,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:background="@color/accent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Let's get social"
+        android:id="@+id/textView2"
+        android:fontFamily="sans-serif-light"
+        android:textSize="50dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:layout_marginBottom="20dp" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -21,15 +33,15 @@
             android:columnCount="3">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:id="@+id/imageView"
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/twitter_bird_white"
-                android:layout_marginLeft="12dp" />
+                android:layout_marginLeft="6dp" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="279dp"
                 android:layout_height="match_parent"
                 android:text="@string/login_with_twitter"
                 android:id="@+id/textView"
@@ -40,17 +52,130 @@
                 android:layout_weight="0.08"
                 android:layout_gravity="center_vertical" />
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:id="@+id/imageView5"
-                android:layout_gravity="center_vertical|right"
-                android:src="@drawable/placeholder4"
-                android:layout_marginRight="5dp"
-                android:layout_column="2"
-                android:layout_row="0" />
         </GridLayout>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/facebook_sign_in_button"
+        android:background="@drawable/rounded_rectangle_facebook"
+        android:weightSum="1"
+        android:layout_marginBottom="10dp" >
+
+        <GridLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:rowCount="1"
+            android:columnCount="3" >
+
+            <ImageView
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:id="@+id/imageView2"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/fb"
+                android:layout_marginLeft="6dp" />
+
+            <TextView
+                android:layout_width="279dp"
+                android:layout_height="match_parent"
+                android:text="Connect with Facebook"
+                android:id="@+id/textView3"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:fontFamily="sans-serif-light"
+                android:layout_weight="0.08"
+                android:layout_gravity="center_vertical" />
+        </GridLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/google_plus_sign_in_button"
+        android:background="@drawable/rounded_rectangle_googleplus"
+        android:weightSum="1"
+        android:layout_marginBottom="10dp" >
+
+        <GridLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:rowCount="1"
+            android:columnCount="3" >
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:id="@+id/imageView3"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/gplus"
+                android:layout_marginLeft="2dp" />
+
+            <TextView
+                android:layout_width="279dp"
+                android:layout_height="match_parent"
+                android:text="Connect with Google+"
+                android:id="@+id/textView4"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:fontFamily="sans-serif-light"
+                android:layout_weight="0.08"
+                android:layout_gravity="center_vertical" />
+        </GridLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/instagram_sign_in_button"
+        android:background="@drawable/rounded_rectangle_instagram"
+        android:weightSum="1"
+        android:layout_marginBottom="50dp" >
+
+        <GridLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:rowCount="1"
+            android:columnCount="3" >
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/imageView4"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/instagram"
+                android:layout_marginLeft="6dp" />
+
+            <TextView
+                android:layout_width="279dp"
+                android:layout_height="match_parent"
+                android:text="Connect with Instagram"
+                android:id="@+id/textView5"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:fontFamily="sans-serif-light"
+                android:layout_weight="0.08"
+                android:layout_gravity="center_vertical" />
+        </GridLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:text="Next"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
+        android:layout_gravity="right"
+        android:background="@drawable/rounded_rectangle" />
 
 </LinearLayout>
