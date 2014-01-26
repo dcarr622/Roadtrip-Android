@@ -98,7 +98,12 @@ public class RTApi {
         login(getUsername(context), getPassword(context), cb);
     }
 
-    public static void updateLocation(final String tripId, final Location loc) {
+    public static void updateLocation(Context context, final String tripId, final Location loc) {
+        ContentValues cv = new ContentValues();
+        cv.put(RTOpenHelper.KEY_TRIP_ID, tripId);
+        cv.put(RTOpenHelper.KEY_LAT, loc.getLatitude());
+        cv.put(RTOpenHelper.KEY_LNG, loc.getLongitude());
+        context.getContentResolver().insert(RTContentProvider.LOCATION_URI, cv);
         new AsyncTask<Void, Void, Void>() {
 
             @Override

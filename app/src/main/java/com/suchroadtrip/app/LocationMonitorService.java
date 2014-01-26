@@ -4,7 +4,6 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -55,7 +54,7 @@ public class LocationMonitorService extends IntentService implements LocationLis
     @Override
     public void onLocationChanged(Location location) {
         Log.d(TAG, "onLocationChanged");
-        RTApi.updateLocation(tripId, location);
+        RTApi.updateLocation(this, tripId, location);
     }
 
     @Override
