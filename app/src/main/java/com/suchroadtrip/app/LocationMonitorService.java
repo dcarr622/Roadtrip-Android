@@ -54,6 +54,12 @@ public class LocationMonitorService extends IntentService implements LocationLis
     @Override
     public void onLocationChanged(Location location) {
         Log.d(TAG, "onLocationChanged");
+        if (!getSharedPreferences("roadtrip_preferences", MODE_PRIVATE).getBoolean("tripActive", true)) {
+            Log.d(TAG, "stopping service");
+            locationClient.removeLocationUpdates(this);
+            locationClient.disconnect();
+            stopSelf();
+        }
         RTApi.updateLocation(this, tripId, location);
     }
 

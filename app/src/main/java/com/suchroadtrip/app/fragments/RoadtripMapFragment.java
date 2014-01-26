@@ -2,9 +2,12 @@ package com.suchroadtrip.app.fragments;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.database.Cursor;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +22,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.suchroadtrip.app.R;
+import com.suchroadtrip.lib.RTContentProvider;
+import com.suchroadtrip.lib.RTOpenHelper;
+
+import java.util.ArrayList;
 
 /**
  * Created by david on 1/24/14.
@@ -30,6 +38,9 @@ public class RoadtripMapFragment extends Fragment implements
 
     private LocationClient locationClient = null;
     private GoogleMap map = null;
+
+    private boolean initedView = false;
+    private String preTripId = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,11 +77,26 @@ public class RoadtripMapFragment extends Fragment implements
             }
         });
 
+        initedView = true;
+
+        if (preTripId != null)
+            setTrip(preTripId);
+
         return v;
     }
 
     public static RoadtripMapFragment newInstance() {
         return new RoadtripMapFragment();
+    }
+
+    public void setTrip(String tripId) {
+        if (initedView) {
+            map.clear();
+            new DrawPath().execute(tripId);
+        } else {
+            preTripId = tripId;
+        }
+
     }
 
     @Override
@@ -91,5 +117,28 @@ public class RoadtripMapFragment extends Fragment implements
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
+    }
+
+    private class DrawPath extends AsyncTask<String, Void, ArrayList<LatLng>> {
+
+        @Override
+        protected ArrayList<LatLng> doInBackground(String... params) {
+            ArrayList<LatLng> points = new ArrayList<LatLng>();
+            Cursor c = getActivity().getContentResolver().query(Uri.withAppendedPath(RTContentProvider.LOCATION_URI, params[0]), null, null, null, null);
+            while (c.moveToNext()) {
+                double lat = c.getDouble(c.getColumnIndex(RTOpenHelper.KEY_LAT));
+                double lng = c.getDouble(c.getColumnIndex(RTOpenHelper.KEY_LNG));
+                points.add(new LatLng(lat, lng));
+            }
+            return points;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<LatLng> points) {
+            Log.d("Map", "drawing " + points + " on the map");
+            PolylineOptions options = new PolylineOptions();
+            options.addAll(points);
+            map.addPolyline(options);
+        }
     }
 }
