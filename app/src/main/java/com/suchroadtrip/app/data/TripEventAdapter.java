@@ -35,15 +35,13 @@ public class TripEventAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
-        View v = null;
+        View v = LayoutInflater.from(context).inflate(R.layout.card, null);
 
         if (cursor.getColumnIndex(RTOpenHelper.KEY_SOCIAL_SERVICE) != -1) {
-            v = LayoutInflater.from(context).inflate(R.layout.card_social, null);
-            v.setTag(new EventTag(EventTag.Type.SOCIAL, v));
+            v.setTag(new EventTag(context, EventTag.Type.SOCIAL, v));
             Log.d(TAG, "social event");
         } else if (cursor.getColumnIndex(RTOpenHelper.KEY_PHOTO_URI) != -1) {
-            v = LayoutInflater.from(context).inflate(R.layout.card_media, null);
-            v.setTag(new EventTag(EventTag.Type.PHOTO, v));
+            v.setTag(new EventTag(context, EventTag.Type.PHOTO, v));
             Log.d(TAG, "photo event");
         }
         return v;
@@ -99,20 +97,27 @@ public class TripEventAdapter extends CursorAdapter {
 
         public TextView socialPostText, socialAuthorText, socialNetworkText;
 
-        public EventTag(Type type, View v) {
+        public EventTag(Context context, Type type, View v) {
             this.type = type;
 
             map = (MapView) v.findViewById(R.id.map_view);
             author = (ImageView) v.findViewById(R.id.author_image);
+            detailLayout = (LinearLayout) v.findViewById(R.id.card_detail_content);
+
+            Log.d(TAG, "detailLayout is null: " + (detailLayout == null));
 
             switch (type) {
                 case SOCIAL:
-                    socialPostText = (TextView) v.findViewById(R.id.postText);
-                    socialAuthorText = (TextView) v.findViewById(R.id.authorText);
-                    socialNetworkText = (TextView) v.findViewById(R.id.networkText);
+                    View socialDetail = LayoutInflater.from(context).inflate(R.layout.detail_social, null);
+                    socialPostText = (TextView) socialDetail.findViewById(R.id.postText);
+                    socialAuthorText = (TextView) socialDetail.findViewById(R.id.authorText);
+                    socialNetworkText = (TextView) socialDetail.findViewById(R.id.networkText);
+                    detailLayout.addView(socialDetail);
                     break;
                 case PHOTO:
-                    photo = (ImageView) v.findViewById(R.id.media_image);
+                    View mediaDetail = LayoutInflater.from(context).inflate(R.layout.detail_media, null);
+                    photo = (ImageView) mediaDetail.findViewById(R.id.media_image);
+                    detailLayout.addView(mediaDetail);
                     break;
             }
 
