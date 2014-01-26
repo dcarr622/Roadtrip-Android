@@ -28,5 +28,9 @@
     <string name="twitter_url">http://suchroadtrip.com/twitter/link</string>
     <string name="add_person">Add Person</string>
     <string name="stop_trip">End Trip</string>
+    <string name="destination">Destination</string>
+    <string name="new_trip_name">Trip Name</string>
+    <string name="new_road_trip">New Road Trip</string>
+    <string name="friends_username">Friend\'s Roadtrip Username</string>
 
 </resources>

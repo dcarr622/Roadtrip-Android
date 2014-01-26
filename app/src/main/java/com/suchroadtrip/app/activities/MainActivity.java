@@ -12,9 +12,6 @@ import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Typeface;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -60,6 +57,19 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
     private static boolean isLoggedIn = false;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Alegreya.ttf");
+        int titleId = getResources().getIdentifier("action_bar_title", "id",
+                "android");
+        TextView actionBarTitle = (TextView) findViewById(titleId);
+        actionBarTitle.setTextColor(getResources().getColor(R.color.white));
+        actionBarTitle.setTypeface(typeface);
+        actionBarTitle.setTextSize(30);
+        actionBarTitle.setPadding(0,0,0,10);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -102,30 +112,11 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         mViewPager = (ViewPager) findViewById(R.id.main_pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-
         try {
             RTApi.login(this, this);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        LocationManager mgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        String provider = mgr.getBestProvider(criteria, true);
-        final Location loc = mgr.getLastKnownLocation(provider);
-        /*RTApi.startTrip(this, "Test Trip", loc, "Las Vegas", new RTApi.StartTripCallback() {
-            @Override
-            public void tripStarted(String id) {
-                Log.d(TAG, "started trip with id " + id);
-                if(id == null){
-                    Log.e(TAG, "null trip id");
-                    return;
-                }
-                Intent intent = new Intent(MainActivity.this, LocationMonitorService.class);
-                intent.putExtra("tripId", id);
-                startService(intent);
-            }
-        });*/
 
     }
 
