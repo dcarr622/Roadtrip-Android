@@ -23,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.suchroadtrip.app.R;
 import com.suchroadtrip.app.data.TripAdapter;
@@ -227,6 +228,8 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         }
         if (id == R.id.action_stop) {
             getSharedPreferences("roadtrip_preferences", MODE_PRIVATE).edit().remove("activeTrip").putBoolean("tripActive", false).commit();
+            Toast.makeText(getApplicationContext(), "Trip stopped", Toast.LENGTH_SHORT).show();
+            invalidateOptionsMenu();
             return true;
         }
         return super.onOptionsItemSelected(item);
