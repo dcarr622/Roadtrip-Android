@@ -60,6 +60,19 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
     private static boolean isLoggedIn = false;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Alegreya.ttf");
+        int titleId = getResources().getIdentifier("action_bar_title", "id",
+                "android");
+        TextView actionBarTitle = (TextView) findViewById(titleId);
+        actionBarTitle.setTextColor(getResources().getColor(R.color.white));
+        actionBarTitle.setTypeface(typeface);
+        actionBarTitle.setTextSize(30);
+        actionBarTitle.setPadding(0,0,0,10);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
