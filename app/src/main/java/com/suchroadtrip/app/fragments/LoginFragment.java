@@ -8,6 +8,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -75,6 +76,9 @@ public class LoginFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
+        if (getActivity().getActionBar().isShowing())
+            getActivity().getActionBar().hide();
+
         // Set up the login form.
         mUserView = (EditText) view.findViewById(R.id.login_user);
         mUserView.setText(mUser);
@@ -83,6 +87,11 @@ public class LoginFragment extends Fragment {
         cookieStore = new PersistentCookieStore(getActivity().getApplicationContext());
         httpClient.setCookieStore(cookieStore);
 
+        //set text to fancy logo font
+
+        TextView appName = (TextView) view.findViewById(R.id.app_name);
+        Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Alegreya.ttf");
+        appName.setTypeface(typeface);
 
         mPasswordView = (EditText) view.findViewById(R.id.login_password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -113,7 +122,7 @@ public class LoginFragment extends Fragment {
                 FragmentManager fragmentManager = getFragmentManager();
                 Fragment registerFragment = RegisterFragment.newInstance();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(android.R.id.content, registerFragment);
+                fragmentTransaction.replace(android.R.id.content, registerFragment);
                 fragmentTransaction.commit();
             }
         });

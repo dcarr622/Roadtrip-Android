@@ -28,91 +28,89 @@
 
     <!-- Register form -->
 
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/imageView"
+        android:src="@drawable/tesla"
+        android:scaleType="centerCrop"
+        android:background="@drawable/black_gradient" />
+
     <ScrollView
         android:id="@+id/register_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/black_gradient">
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Let's get started"
+                android:id="@+id/textView"
+                android:fontFamily="sans-serif-light"
+                android:textSize="50dp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:layout_marginBottom="20dp" />
+
+            <EditText
+                android:id="@+id/register_user"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:inputType="text"
+                android:hint="@string/prompt_user"
+                android:background="@drawable/rounded_rectangle"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp" />
+
+            <EditText
+                android:id="@+id/register_email"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:inputType="text"
+                android:hint="@string/prompt_email"
+                android:paddingLeft="16dp"
+                android:background="@drawable/rounded_rectangle"
+                android:layout_marginTop="10dp"
+                android:paddingRight="16dp" />
+
+            <EditText
+                android:id="@+id/register_password"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="@string/prompt_password"
+                android:inputType="textPassword"
+                android:imeActionLabel="@string/action_sign_in"
+                android:imeActionId="@+id/register"
+                android:imeOptions="actionUnspecified"
+                android:paddingLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_rectangle"
+                android:paddingRight="16dp" />
+
+            <Button android:id="@+id/register_button"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="16dp"
+                android:text="Next"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:layout_gravity="right"
+                android:background="@drawable/rounded_rectangle" />
+
+        </LinearLayout>
     </ScrollView>
 
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/imageView"
-        android:src="@drawable/highway"
-        android:scaleType="center"
-        android:background="@drawable/black_gradient" />
-
-    <LinearLayout style="@style/LoginFormContainer"
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Let's get started"
-            android:id="@+id/textView"
-            android:fontFamily="sans-serif-light"
-            android:textSize="50dp"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:layout_marginBottom="20dp" />
-
-        <EditText
-            android:id="@+id/register_user"
-            android:singleLine="true"
-            android:maxLines="1"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:inputType="text"
-            android:hint="@string/prompt_user"
-            android:background="@drawable/rounded_rectangle"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp" />
-
-        <EditText
-            android:id="@+id/register_email"
-            android:singleLine="true"
-            android:maxLines="1"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:inputType="text"
-            android:hint="@string/prompt_email"
-            android:paddingLeft="16dp"
-            android:background="@drawable/rounded_rectangle"
-            android:layout_marginTop="10dp"
-            android:paddingRight="16dp" />
-
-
-        <EditText
-            android:id="@+id/register_password"
-            android:singleLine="true"
-            android:maxLines="1"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="@string/prompt_password"
-            android:inputType="textPassword"
-            android:imeActionLabel="@string/action_sign_in"
-            android:imeActionId="@+id/register"
-            android:imeOptions="actionUnspecified"
-            android:paddingLeft="16dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/rounded_rectangle"
-            android:paddingRight="16dp" />
-
-
-
-        <Button android:id="@+id/register_button"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="16dp"
-            android:text="Next"
-            android:paddingLeft="32dp"
-            android:paddingRight="32dp"
-            android:layout_gravity="right"
-            android:background="@drawable/rounded_rectangle" />
-
-    </LinearLayout>
 </RelativeLayout>
