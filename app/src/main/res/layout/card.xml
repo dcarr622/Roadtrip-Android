@@ -24,10 +24,10 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
+            <com.google.android.gms.maps.MapView
                 android:layout_width="250dp"
                 android:layout_height="250dp"
-                android:id="@+id/map_image"
+                android:id="@+id/map_view"
                 android:layout_gravity="center_horizontal|bottom"
                 android:src="@drawable/placeholder2"
                 android:cropToPadding="false"
