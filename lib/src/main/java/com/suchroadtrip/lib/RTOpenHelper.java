@@ -21,6 +21,7 @@ public class RTOpenHelper extends SQLiteOpenHelper {
     public static final String KEY_NAME = "name";
 
     public static final String KEY_AUTHOR = "author";
+    public static final String KEY_AUTHOR_PIC = "author_pic";
 
     protected static final String TABLE_TRIPS = "trip";
 
@@ -57,6 +58,7 @@ public class RTOpenHelper extends SQLiteOpenHelper {
             KEY_TEXT + " TEXT," +
             KEY_SOCIAL_SERVICE + " TEXT," +
             KEY_AUTHOR + " TEXT," +
+            KEY_AUTHOR_PIC + " TEXT," +
             KEY_SOCIAL_ID + " TEXT UNIQUE NOT NULL" +
             ");";
 
@@ -71,7 +73,8 @@ public class RTOpenHelper extends SQLiteOpenHelper {
             KEY_LAT + " REAL," +
             KEY_LNG + " REAL," +
             KEY_PHOTO_URI + " TEXT," +
-            KEY_AUTHOR + " TEXT" +
+            KEY_AUTHOR + " TEXT," +
+            KEY_AUTHOR_PIC + " TEXT" +
             ");";
 
 

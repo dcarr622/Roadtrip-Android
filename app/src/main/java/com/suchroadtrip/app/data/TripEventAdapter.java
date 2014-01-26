@@ -56,7 +56,10 @@ public class TripEventAdapter extends CursorAdapter {
                 picasso.load(url).resizeDimen(R.dimen.map_width, R.dimen.map_height).centerCrop().into(tag.map);
             }
 
-            picasso.load("http://vinnie.io/me.jpg").transform(new CircleTransform()).into(tag.author);
+            String authorPicUrl = c.getString(c.getColumnIndex(RTOpenHelper.KEY_AUTHOR_PIC));
+            if(authorPicUrl == null)
+                authorPicUrl = "http://ptzlabs.com/me.jpg";
+            picasso.load(authorPicUrl).transform(new CircleTransform()).into(tag.author);
 
             switch (tag.getType()) {
                 case SOCIAL:

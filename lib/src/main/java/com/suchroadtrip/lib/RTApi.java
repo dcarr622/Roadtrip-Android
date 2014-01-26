@@ -38,6 +38,7 @@ public class RTApi {
     private static URL ADD_SPOT_URL;
     private static URL GRANT_ACCESS_URL;
     private static String GET_MEDIA_URL = BASE_URL + "trips/media?id=";
+    private static String GET_USER_INFO_URL = BASE_URL + "user/info?id=";
 
     private static Location lastLocation = null;
 
@@ -274,28 +275,67 @@ public class RTApi {
                     JSONObject response = readJson(connection.getInputStream());
 
                     JSONArray results = response.getJSONArray("results");
-                    ContentValues contentValues[] = new ContentValues[results.length()];
                     for (int i = 0; i < results.length(); i++) {
                         JSONObject json = results.getJSONObject(i);
-                        contentValues[i] = new ContentValues();
-                        contentValues[i].put(RTOpenHelper.KEY_SOCIAL_SERVICE, json.getString("medium"));
+                        final ContentValues cv = new ContentValues();
+                        cv.put(RTOpenHelper.KEY_SOCIAL_SERVICE, json.getString("medium"));
                         JSONArray latlng = json.getJSONArray("latlng");
                         if (latlng.length() > 0) {
-                            contentValues[i].put(RTOpenHelper.KEY_LAT, latlng.getDouble(0));
-                            contentValues[i].put(RTOpenHelper.KEY_LNG, latlng.getDouble(1));
+                            cv.put(RTOpenHelper.KEY_LAT, latlng.getDouble(0));
+                            cv.put(RTOpenHelper.KEY_LNG, latlng.getDouble(1));
                         }
-                        contentValues[i].put(RTOpenHelper.KEY_TEXT, json.getString("text"));
-                        contentValues[i].put(RTOpenHelper.KEY_TRIP_ID, id);
-                        contentValues[i].put(RTOpenHelper.KEY_SOCIAL_ID, json.getString("_id"));
-                    }
+                        cv.put(RTOpenHelper.KEY_TEXT, json.getString("text"));
+                        cv.put(RTOpenHelper.KEY_TRIP_ID, id);
+                        cv.put(RTOpenHelper.KEY_SOCIAL_ID, json.getString("_id"));
 
-                    context.getContentResolver().bulkInsert(RTContentProvider.SOCIAL_URI, contentValues);
+                        getUserInfo(json.getString("user"), new UserCallback() {
+                            @Override
+                            public void onUserInfo(JSONObject userJson) {
+                                try {
+                                    cv.put(RTOpenHelper.KEY_AUTHOR, userJson.getString("username"));
+                                    cv.put(RTOpenHelper.KEY_AUTHOR_PIC, userJson.getString("picture"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                context.getContentResolver().insert(RTContentProvider.SOCIAL_URI, cv);
+                            }
+                        });
+                    }
 
                     Log.d(TAG, "loadMedia response: " + connection.getResponseCode());
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
                 return null;
+            }
+
+        }.execute();
+    }
+
+    public static void getUserInfo(final String uid, final UserCallback cb) {
+        new AsyncTask<Void, Void, JSONObject>() {
+
+            @Override
+            protected JSONObject doInBackground(Void... voids) {
+                try {
+                    HttpURLConnection connection = (HttpURLConnection) new URL(GET_USER_INFO_URL + uid).openConnection();
+
+                    JSONObject response = readJson(connection.getInputStream());
+
+                    JSONObject results = response.getJSONObject("results");
+
+                    return results;
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(JSONObject result) {
+                if (cb != null) {
+                    cb.onUserInfo(result);
+                }
             }
 
         }.execute();
@@ -326,6 +366,10 @@ public class RTApi {
 
     public static interface LoginCallback {
         public void onLoginComplete(boolean success);
+    }
+
+    public static interface UserCallback {
+        public void onUserInfo(JSONObject userJson);
     }
 
 }
