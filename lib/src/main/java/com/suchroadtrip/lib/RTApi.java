@@ -208,9 +208,9 @@ public class RTApi {
             protected void onPostExecute(String result) {
                 if (cb != null) {
                     if (result != null)
-                        cb.tripStarted(result);
+                        cb.tripStarted(context, result);
                     else
-                        cb.tripStarted(null);
+                        cb.tripStarted(context, null);
                 }
             }
 
@@ -266,7 +266,7 @@ public class RTApi {
     }
 
     public static interface StartTripCallback {
-        public void tripStarted(String id);
+        public void tripStarted(Context context, String id);
     }
 
     public static interface LoginCallback {
