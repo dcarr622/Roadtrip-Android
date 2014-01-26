@@ -117,7 +117,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         actionBarTitle.setTextColor(getResources().getColor(R.color.white));
         actionBarTitle.setTypeface(typeface);
         actionBarTitle.setTextSize(30);
-        actionBarTitle.setPadding(0,0,0,10);
+        actionBarTitle.setPadding(0, 0, 0, 10);
     }
 
     @Override
@@ -151,12 +151,11 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         actionBarTitle.setTextColor(getResources().getColor(R.color.white));
         actionBarTitle.setTypeface(typeface);
         actionBarTitle.setTextSize(30);
-        actionBarTitle.setPadding(0,0,0,10);
+        actionBarTitle.setPadding(0, 0, 0, 10);
 
         getActionBar().setDisplayShowHomeEnabled(false);
 
         getActionBar().setBackgroundDrawable(new ColorDrawable(0xff006ABD));
-
 
 
         setContentView(R.layout.activity_main);
@@ -200,8 +199,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
 
             MenuItem startnew = menu.findItem(R.id.action_new_trip);
             startnew.setVisible(false);
-        }
-        else if (sharedPrefs.getBoolean("tripActive", true)) {
+        } else if (sharedPrefs.getBoolean("tripActive", true)) {
             Log.d(TAG, "Trip is not active");
             MenuItem stop = menu.findItem(R.id.action_stop);
             stop.setVisible(false);
@@ -225,6 +223,10 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         if (id == R.id.action_new_trip) {
             NewTripFragment newTripDialog = new NewTripFragment();
             newTripDialog.show(getFragmentManager(), "New Trip");
+            return true;
+        }
+        if (id == R.id.action_stop) {
+            getSharedPreferences("roadtrip_preferences", MODE_PRIVATE).edit().remove("activeTrip").putBoolean("tripActive", false).commit();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -279,12 +281,13 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             if (position == 0) {
-                if(mapFragment == null)
+                if (mapFragment == null)
                     mapFragment = RoadtripMapFragment.newInstance();
+                mapFragment.setTrip("52e4de71bc7b92b20ecef7fa");
                 return mapFragment;
             }
             if (position == 1) {
-                if(feedFragment == null)
+                if (feedFragment == null)
                     feedFragment = RoadtripFeedFragment.newInstance("52e4c576bc7b92b20ecef6df"); //TODO read the real id's here
                 return feedFragment;
             }

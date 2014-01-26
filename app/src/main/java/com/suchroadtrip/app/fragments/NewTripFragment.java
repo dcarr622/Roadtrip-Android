@@ -7,9 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,6 +18,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.location.LocationClient;
 import com.suchroadtrip.app.LocationMonitorService;
 import com.suchroadtrip.app.R;
 import com.suchroadtrip.app.activities.MainActivity;
@@ -31,7 +32,9 @@ import java.util.List;
 /**
  * Created by david on 1/25/14.
  */
-public class NewTripFragment extends DialogFragment {
+public class NewTripFragment extends DialogFragment implements
+        GooglePlayServicesClient.ConnectionCallbacks,
+        GooglePlayServicesClient.OnConnectionFailedListener {
 
     private static final String TAG = "NewTripFragment";
 
@@ -46,8 +49,17 @@ public class NewTripFragment extends DialogFragment {
     SharedPreferences sharedPrefs;
     SharedPreferences.Editor editor;
 
+
+    private LocationClient locationClient;
+    private Location location = null;
+    private boolean attemptedBeforeLocation;
+    private String sTripName, sDestination;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        locationClient = new LocationClient(getActivity(), this, this);
+        locationClient.connect();
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
@@ -100,18 +112,18 @@ public class NewTripFragment extends DialogFragment {
     }
 
     private void startTrip(String tripname, String destination) {
-
-        LocationManager mgr = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        String provider = mgr.getBestProvider(criteria, true);
-        final Location loc = mgr.getLastKnownLocation(provider);
-
          /* Show/hide proper menu bar icons */
         getActivity().invalidateOptionsMenu();
         MainActivity.getInstance().startTimer();
 
-        RTApi.startTrip(getActivity(), tripname, loc, destination, new RTApi.StartTripCallback() {
+        if (location == null) {
+            attemptedBeforeLocation = true;
+            sTripName = tripname;
+            sDestination = destination;
+            return;
+        }
+
+        RTApi.startTrip(getActivity(), tripname, location, destination, new RTApi.StartTripCallback() {
             @Override
             public void tripStarted(Context context, String id) {
                 Log.d(TAG, "started trip with id " + id);
@@ -139,4 +151,23 @@ public class NewTripFragment extends DialogFragment {
 //        }
     }
 
+    @Override
+    public void onConnected(Bundle bundle) {
+        location = locationClient.getLastLocation();
+
+        if (attemptedBeforeLocation) {
+            attemptedBeforeLocation = false;
+            startTrip(sTripName, sDestination);
+        }
+    }
+
+    @Override
+    public void onDisconnected() {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
 }
