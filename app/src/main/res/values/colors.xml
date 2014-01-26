@@ -4,4 +4,10 @@
     <color name="white">#FFFFFF</color>
     <color name="twitter">#55ACEE</color>
     <color name="google_now_blue">#4385f4</color>
+    <color name="cyan">#4cb4e4</color>
+    <color name="bkg">#eeeeee</color>
+    <color name="gold">#ffcc00</color>
+    <color name="gray">#d6d6d6</color>
+    <color name="offwhite">#fafafa</color>
+    <color name="black_overlay">#66000000</color>
 </resources>
