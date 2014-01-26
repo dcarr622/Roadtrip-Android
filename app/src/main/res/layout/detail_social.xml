@@ -25,7 +25,6 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:fontFamily="sans-serif-light"
-        android:singleLine="true"
         android:textSize="18dp" />
 
     <LinearLayout
