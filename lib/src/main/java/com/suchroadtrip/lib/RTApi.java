@@ -86,7 +86,8 @@ public class RTApi {
 
             @Override
             protected void onPostExecute(Boolean result) {
-                cb.onLoginComplete(result);
+                if (cb != null)
+                    cb.onLoginComplete(result);
             }
         }.execute();
 
@@ -205,10 +206,12 @@ public class RTApi {
 
             @Override
             protected void onPostExecute(String result) {
-                if (result != null)
-                    cb.tripStarted(result);
-                else
-                    cb.tripStarted(null);
+                if (cb != null) {
+                    if (result != null)
+                        cb.tripStarted(context, result);
+                    else
+                        cb.tripStarted(context, null);
+                }
             }
 
         }.execute();
@@ -263,7 +266,7 @@ public class RTApi {
     }
 
     public static interface StartTripCallback {
-        public void tripStarted(String id);
+        public void tripStarted(Context context, String id);
     }
 
     public static interface LoginCallback {

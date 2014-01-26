@@ -110,28 +110,28 @@ public class NewTripFragment extends DialogFragment {
 
         RTApi.startTrip(getActivity(), tripname, loc, destination,  new RTApi.StartTripCallback() {
             @Override
-            public void tripStarted(String id) {
+            public void tripStarted(Context context, String id) {
                 Log.d(TAG, "started trip with id " + id);
                 if (id == null) {
                     Log.e(TAG, "null trip id");
                     return;
                 }
-                Intent intent = new Intent(getActivity(), LocationMonitorService.class);
+                Intent intent = new Intent(context, LocationMonitorService.class);
                 intent.putExtra("tripId", id);
-                getActivity().startService(intent);
+                context.startService(intent);
 
-                editor = LoginActivity.sharedPrefs.edit();
+                editor = context.getSharedPreferences("roadtrip_preferences", Context.MODE_PRIVATE).edit();
                 editor.putBoolean("tripActive", true);
                 editor.putString("activeTrip", id);
                 editor.commit();
             }
         });
 
-        for (EditText nameBox: personNames) {
-            if (nameBox.getEditableText().toString() != null && nameBox.getEditableText().toString().length() > 1) {
-
-            }
-        }
+//        for (EditText nameBox: personNames) {
+//            if (nameBox.getEditableText().toString() != null && nameBox.getEditableText().toString().length() > 1) {
+//
+//            }
+//        }
     }
 
     public static Fragment newInstance() {
