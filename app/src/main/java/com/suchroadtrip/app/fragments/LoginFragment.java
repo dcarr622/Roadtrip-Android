@@ -273,6 +273,10 @@ public class LoginFragment extends Fragment {
                         String userCheckresp = EntityUtils.toString(userCheckResponse.getEntity());
                         JSONObject getResult = new JSONObject(userCheckresp);
                         String username = getResult.getString("username");
+                        String userID = getResult.getString("_id");
+                        editor = LoginActivity.sharedPrefs.edit();
+                        editor.putString("_id", userID);
+                        editor.commit();
                         Log.v("usernameCheck", username);
                     }
                     catch (Exception e) {

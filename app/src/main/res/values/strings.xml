@@ -25,5 +25,6 @@
     <string name="action_sign_in_short">Sign in</string>
     <string name="action_sign_in_register">Sign in or Register</string>
     <string name="new_trip">New Trip</string>
+    <string name="twitter_url">http://suchroadtrip.com/twitter/link</string>
 
 </resources>
