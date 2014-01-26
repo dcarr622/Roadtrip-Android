@@ -23,20 +23,20 @@ public class RoadtripFeedFragment extends Fragment implements LoaderManager.Load
 
     private static final String ARG_TRIP_ID = "trip";
 
-    public static RoadtripFeedFragment newInstance(int tripId) {
+    public static RoadtripFeedFragment newInstance(String tripId) {
         Bundle args = new Bundle();
-        args.putInt(ARG_TRIP_ID, tripId);
+        args.putString(ARG_TRIP_ID, tripId);
         RoadtripFeedFragment fragment = new RoadtripFeedFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
-    private int tripId = 0;
+    private String tripId = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        this.tripId = getArguments().getInt(ARG_TRIP_ID);
+        this.tripId = getArguments().getString(ARG_TRIP_ID);
 
         getLoaderManager().initLoader(0, null, this);
 
@@ -51,7 +51,7 @@ public class RoadtripFeedFragment extends Fragment implements LoaderManager.Load
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
         switch (id) {
             case 0:
-                return new CursorLoader(getActivity(), Uri.withAppendedPath(RTContentProvider.ALL_EVENTS_URI, "" + tripId), null, null, null, null);
+                return new CursorLoader(getActivity(), Uri.withAppendedPath(RTContentProvider.ALL_EVENTS_URI, tripId), null, null, null, null);
         }
         return null;
     }

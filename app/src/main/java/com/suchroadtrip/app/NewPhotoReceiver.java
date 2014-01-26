@@ -27,7 +27,10 @@ public class NewPhotoReceiver extends BroadcastReceiver {
 
         SharedPreferences prefs = context.getSharedPreferences("roadtrip_preferences", Context.MODE_PRIVATE);
         if (prefs.getBoolean("tripActive", false)) {
+            Log.d("newphoto", "adding for "+prefs.getString("activeTrip", null));
             RTApi.addPicture(context, prefs.getString("activeTrip", null), intent.getData(), loc);
+        } else {
+            Log.d("newphoto", "ignoring picture because no active trip");
         }
     }
 

@@ -186,12 +186,12 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
             // Return a PlaceholderFragment (defined as a static inner class below).
             if (position == 0) {
                 if(mapFragment == null)
-                    mapFragment = (RoadtripMapFragment) RoadtripMapFragment.newInstance();
+                    mapFragment = RoadtripMapFragment.newInstance();
                 return mapFragment;
             }
             if (position == 1) {
                 if(feedFragment == null)
-                    feedFragment = RoadtripFeedFragment.newInstance(1); //TODO read the real id's here
+                    feedFragment = RoadtripFeedFragment.newInstance("52e4c576bc7b92b20ecef6df"); //TODO read the real id's here
                 return feedFragment;
             }
             return null;
