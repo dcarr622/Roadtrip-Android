@@ -5,10 +5,11 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,6 @@ import android.widget.EditText;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.location.LocationClient;
-import com.suchroadtrip.app.LocationMonitorService;
 import com.suchroadtrip.app.R;
 import com.suchroadtrip.app.activities.MainActivity;
 import com.suchroadtrip.lib.RTApi;
@@ -119,26 +119,7 @@ public class NewTripFragment extends DialogFragment implements
             return;
         }
 
-        RTApi.startTrip(getActivity(), tripname, location, destination, new RTApi.StartTripCallback() {
-            @Override
-            public void tripStarted(Context context, String id) {
-                Log.d(TAG, "started trip with id " + id);
-                if (id == null) {
-                    Log.e(TAG, "null trip id");
-                    return;
-                }
-                Intent intent = new Intent(context, LocationMonitorService.class);
-                intent.putExtra("tripId", id);
-                context.startService(intent);
-
-                /* Set shared prefs to indicate Trip in progress */
-                editor = context.getSharedPreferences("roadtrip_preferences", Context.MODE_PRIVATE).edit();
-                editor.putBoolean("tripActive", true);
-                editor.putString("activeTrip", id);
-                editor.commit();
-
-            }
-        });
+        RTApi.startTrip(getActivity(), tripname, location, destination, (MainActivity) getActivity());
 
 //        HttpPost postRequest = new HttpPost(getString(R.string.roadtrip_add_friend));
 //        DefaultHttpClient httpClient = new DefaultHttpClient();

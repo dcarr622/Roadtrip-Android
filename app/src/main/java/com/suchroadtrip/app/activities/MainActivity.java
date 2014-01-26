@@ -25,6 +25,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.suchroadtrip.app.LocationMonitorService;
 import com.suchroadtrip.app.R;
 import com.suchroadtrip.app.data.TripAdapter;
 import com.suchroadtrip.app.fragments.AddFriendDialog;
@@ -39,7 +40,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class MainActivity extends Activity implements ActionBar.OnNavigationListener, LoaderManager.LoaderCallbacks<Cursor>, RTApi.LoginCallback {
+public class MainActivity extends Activity implements ActionBar.OnNavigationListener, LoaderManager.LoaderCallbacks<Cursor>, RTApi.LoginCallback, RTApi.StartTripCallback {
 
     private static final String TAG = "wowsuchtag";
 
@@ -63,7 +64,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
     private Runnable everySecond = new Runnable() {
 
         public void run() {
-            if(moving) {
+            if (moving) {
                 time.setTime(time.getTime() + 1000);
                 if (lastLocation == null) {
                     lastLocation = RTApi.getLastLocation();
@@ -273,6 +274,27 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         Log.d(TAG, "RTApi login success:" + success);
     }
 
+    @Override
+    public void tripStarted(String id) {
+        Log.d(TAG, "started trip with id " + id);
+        if (id == null) {
+            Log.e(TAG, "null trip id");
+            return;
+        }
+        Intent intent = new Intent(this, LocationMonitorService.class);
+        intent.putExtra("tripId", id);
+        startService(intent);
+
+        //Set shared prefs to indicate Trip in progress
+        editor = getSharedPreferences("roadtrip_preferences", Context.MODE_PRIVATE).edit();
+        editor.putBoolean("tripActive", true);
+        editor.putString("activeTrip", id);
+        editor.commit();
+
+        mSectionsPagerAdapter.mapFragment.setTrip(id);
+        mSectionsPagerAdapter.feedFragment.setTrip(id);
+    }
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -293,12 +315,12 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
             if (position == 0) {
                 if (mapFragment == null)
                     mapFragment = RoadtripMapFragment.newInstance();
-                mapFragment.setTrip("52e4de71bc7b92b20ecef7fa");
+                mapFragment.setTrip("52e534ce0eb11bf015a40c51");
                 return mapFragment;
             }
             if (position == 1) {
                 if (feedFragment == null)
-                    feedFragment = RoadtripFeedFragment.newInstance("52e4c576bc7b92b20ecef6df"); //TODO read the real id's here
+                    feedFragment = RoadtripFeedFragment.newInstance("52e534ce0eb11bf015a40c51"); //TODO read the real id's here
                 return feedFragment;
             }
             return null;

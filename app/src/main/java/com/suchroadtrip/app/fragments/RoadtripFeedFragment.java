@@ -14,6 +14,7 @@ import android.widget.ListView;
 
 import com.suchroadtrip.app.R;
 import com.suchroadtrip.app.data.TripEventAdapter;
+import com.suchroadtrip.lib.RTApi;
 import com.suchroadtrip.lib.RTContentProvider;
 
 /**
@@ -33,15 +34,21 @@ public class RoadtripFeedFragment extends Fragment implements LoaderManager.Load
 
     private String tripId = null;
 
+    public void setTrip(String id){
+        this.tripId = id;
+        getLoaderManager().initLoader(0, null, this);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        this.tripId = getArguments().getString(ARG_TRIP_ID);
+        setTrip(getArguments().getString(ARG_TRIP_ID));
 
-        getLoaderManager().initLoader(0, null, this);
 
         if (!getActivity().getActionBar().isShowing())
             getActivity().getActionBar().show();
+
+        RTApi.loadMedia(getActivity(), tripId);
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_roadtripfeed, container, false);
