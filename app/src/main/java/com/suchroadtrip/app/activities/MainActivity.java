@@ -21,7 +21,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.suchroadtrip.app.LocationMonitorService;
 import com.suchroadtrip.app.R;
 import com.suchroadtrip.app.data.TripAdapter;
 import com.suchroadtrip.app.fragments.NewTripFragment;
@@ -75,8 +74,6 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
 
         setContentView(R.layout.activity_main);
 
-        getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-
 //        int titleID = getResources().getIdentifier("action_bar_title", "id", "android);");
 //        TextView titleTextView = (TextView) findViewById(titleID);
 //        Typeface tf = Typeface.createFromAsset(getAssets(), "@asset/AlegreyaSans-Black.ttf");
@@ -94,7 +91,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
 
 
         try {
-            RTApi.login("vmagro", "wowsuchapp", this);
+            RTApi.login(this, this);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -103,7 +100,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
         String provider = mgr.getBestProvider(criteria, true);
         final Location loc = mgr.getLastKnownLocation(provider);
-        RTApi.startTrip(this, "Test Trip", loc, "Las Vegas", new RTApi.StartTripCallback() {
+        /*RTApi.startTrip(this, "Test Trip", loc, "Las Vegas", new RTApi.StartTripCallback() {
             @Override
             public void tripStarted(String id) {
                 Log.d(TAG, "started trip with id " + id);
@@ -115,7 +112,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
                 intent.putExtra("tripId", id);
                 startService(intent);
             }
-        });
+        });*/
 
     }
 
@@ -180,6 +177,9 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+        private RoadtripMapFragment mapFragment;
+        private RoadtripFeedFragment feedFragment;
+
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -189,10 +189,14 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             if (position == 0) {
-                return RoadtripMapFragment.newInstance();
+                if(mapFragment == null)
+                    mapFragment = RoadtripMapFragment.newInstance();
+                return mapFragment;
             }
             if (position == 1) {
-                return RoadtripFeedFragment.newInstance(1);
+                if(feedFragment == null)
+                    feedFragment = RoadtripFeedFragment.newInstance(1); //TODO read the real id's here
+                return feedFragment;
             }
             return null;
         }

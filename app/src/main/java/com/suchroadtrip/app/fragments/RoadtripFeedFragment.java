@@ -33,10 +33,6 @@ public class RoadtripFeedFragment extends Fragment implements LoaderManager.Load
 
     private int tripId = 0;
 
-    public RoadtripFeedFragment() {
-
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
