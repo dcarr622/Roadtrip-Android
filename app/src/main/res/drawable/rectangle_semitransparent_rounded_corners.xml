@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+<item
+    android:state_pressed="true">
+
+    <shape xmlns:android="http://schemas.android.com/apk/res/android">
+        <solid android:color="#dd4385f4" />
+        <corners android:topLeftRadius="2dp" android:topRightRadius="2dp"
+            android:bottomLeftRadius="2dp" android:bottomRightRadius="2dp"/>
+        </shape>
+
+    </item>
+
+<item
+    android:state_pressed="false">
+
+    <shape xmlns:android="http://schemas.android.com/apk/res/android">
+        <solid android:color="#ddffffff" />
+        <corners android:topLeftRadius="2dp" android:topRightRadius="2dp"
+            android:bottomLeftRadius="2dp" android:bottomRightRadius="2dp"/>
+    </shape>
+
+    </item>
+
+<item
+    android:state_focused="false"
+    android:state_pressed="true"
+    android:color="@android:color/white">
+
+    <shape xmlns:android="http://schemas.android.com/apk/res/android">
+        <solid android:color="@android:color/white" />
+        <corners android:topLeftRadius="2dp" android:topRightRadius="2dp"
+            android:bottomLeftRadius="2dp" android:bottomRightRadius="2dp"/>
+    </shape>
+
+    </item>
+
+<item>
+    <shape xmlns:android="http://schemas.android.com/apk/res/android">
+        <solid android:color="#ddffffff" />
+        <corners android:topLeftRadius="2dp" android:topRightRadius="2dp"
+            android:bottomLeftRadius="2dp" android:bottomRightRadius="2dp"/>
+    </shape>
+
+    </item>
+
+</selector>

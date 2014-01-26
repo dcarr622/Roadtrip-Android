@@ -1,12 +1,16 @@
 package com.suchroadtrip.app.fragments;
 
 import android.app.Fragment;
+import android.content.Context;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
@@ -42,6 +46,25 @@ public class RoadtripMapFragment extends Fragment implements
 
         locationClient = new LocationClient(getActivity(), this, this);
         locationClient.connect();
+
+        map.getUiSettings().setMyLocationButtonEnabled(false);
+        map.getUiSettings().setZoomControlsEnabled(false);
+
+        Button myLocationButton = (Button) v.findViewById(R.id.my_location_button);
+        myLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Location myLoc = map.getMyLocation();
+                if (myLoc == null) {
+                    LocationManager mgr = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+                    Criteria criteria = new Criteria();
+                    criteria.setAccuracy(Criteria.ACCURACY_FINE);
+                    String provider = mgr.getBestProvider(criteria, true);
+                    myLoc = mgr.getLastKnownLocation(provider);
+                }
+                map.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(myLoc.getLatitude(), myLoc.getLongitude())));
+            }
+        });
 
         return v;
     }
