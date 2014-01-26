@@ -16,10 +16,4 @@
         android:icon="@android:drawable/ic_menu_add"
         android:title="@string/add_person"
         android:showAsAction="ifRoom" />
-
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never" />
-
 </menu>
