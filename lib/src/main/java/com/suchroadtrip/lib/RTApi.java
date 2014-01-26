@@ -37,6 +37,8 @@ public class RTApi {
     private static URL ADD_SPOT_URL;
     private static URL GRANT_ACCESS_URL;
 
+    private static Location lastLocation = null;
+
     static {
         CookieManager cookieManager = new CookieManager();
         CookieHandler.setDefault(cookieManager);
@@ -98,7 +100,12 @@ public class RTApi {
         login(getUsername(context), getPassword(context), cb);
     }
 
+    public static Location getLastLocation() {
+        return lastLocation;
+    }
+
     public static void updateLocation(Context context, final String tripId, final Location loc) {
+        lastLocation = loc;
         ContentValues cv = new ContentValues();
         cv.put(RTOpenHelper.KEY_TRIP_ID, tripId);
         cv.put(RTOpenHelper.KEY_LAT, loc.getLatitude());

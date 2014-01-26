@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v13.app.FragmentPagerAdapter;
@@ -54,13 +55,22 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
     Handler timerHandler = null;
     private Date time = new Date(0);
     private boolean moving = false;
+    private double totalDistance = 0.00;
+    private Location lastLocation = null;
     private SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.US);
     private Runnable everySecond = new Runnable() {
 
         public void run() {
             if(moving) {
                 time.setTime(time.getTime() + 1000);
-                setElapsedTime(timeFormat.format(time));
+                if (lastLocation != null) {
+                    Location currentLocation = RTApi.getLastLocation();
+                    if (currentLocation != null) {
+                        totalDistance += lastLocation.distanceTo(currentLocation);
+                        lastLocation = currentLocation;
+                    }
+                }
+                setDistTime(timeFormat.format(time), totalDistance);
                 timerHandler.postDelayed(this, 1000);
             }
         }
@@ -72,9 +82,11 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         return instance;
     }
 
-    protected void setElapsedTime(String text) {
+    protected void setDistTime(String text, Double dist) {
         TextView elapsedTime = (TextView) findViewById(R.id.time_elapsed_text_view);
         elapsedTime.setText(text);
+        TextView distanceTraveled = (TextView) findViewById(R.id.distance_traveled_text_view);
+        elapsedTime.setText(dist.toString());
     }
 
     /**
@@ -157,7 +169,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         mViewPager = (ViewPager) findViewById(R.id.main_pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-//        startTimer();
+        lastLocation = RTApi.getLastLocation();
 
     }
 

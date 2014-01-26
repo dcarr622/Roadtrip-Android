@@ -75,7 +75,7 @@
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="61dp"
-                    android:text="4:37:01"
+                    android:text="0:00"
                     android:id="@+id/time_elapsed_text_view"
                     android:fontFamily="sans-serif-light"
                     android:gravity="center_horizontal"
