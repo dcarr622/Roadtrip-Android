@@ -134,7 +134,4 @@ public class NewTripFragment extends DialogFragment {
 //        }
     }
 
-    public static Fragment newInstance() {
-        return new NewTripFragment();
-    }
 }
