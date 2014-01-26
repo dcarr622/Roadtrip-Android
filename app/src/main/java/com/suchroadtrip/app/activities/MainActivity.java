@@ -10,8 +10,10 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -92,6 +94,10 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         actionBarTitle.setPadding(0,0,0,10);
 
         getActionBar().setDisplayShowHomeEnabled(false);
+
+        getActionBar().setBackgroundDrawable(new ColorDrawable(0xff006ABD));
+
+
 
         setContentView(R.layout.activity_main);
 
