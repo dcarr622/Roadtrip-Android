@@ -23,9 +23,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.suchroadtrip.app.LocationMonitorService;
 import com.suchroadtrip.app.R;
 import com.suchroadtrip.app.data.TripAdapter;
+import com.suchroadtrip.app.fragments.NewTripFragment;
 import com.suchroadtrip.app.fragments.RoadtripFeedFragment;
 import com.suchroadtrip.app.fragments.RoadtripMapFragment;
 import com.suchroadtrip.lib.RTApi;
@@ -87,8 +87,6 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
 
         setContentView(R.layout.activity_main);
 
-        getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-
 //        int titleID = getResources().getIdentifier("action_bar_title", "id", "android);");
 //        TextView titleTextView = (TextView) findViewById(titleID);
 //        Typeface tf = Typeface.createFromAsset(getAssets(), "@asset/Alegreya.ttf");
@@ -106,7 +104,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
 
 
         try {
-            RTApi.login("vmagro", "wowsuchapp", this);
+            RTApi.login(this, this);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -115,7 +113,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
         String provider = mgr.getBestProvider(criteria, true);
         final Location loc = mgr.getLastKnownLocation(provider);
-        RTApi.startTrip(this, "Test Trip", loc, "Las Vegas", new RTApi.StartTripCallback() {
+        /*RTApi.startTrip(this, "Test Trip", loc, "Las Vegas", new RTApi.StartTripCallback() {
             @Override
             public void tripStarted(String id) {
                 Log.d(TAG, "started trip with id " + id);
@@ -127,7 +125,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
                 intent.putExtra("tripId", id);
                 startService(intent);
             }
-        });
+        });*/
 
     }
 
@@ -145,6 +143,11 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+            return true;
+        }
+        if (id == R.id.action_new_trip) {
+            NewTripFragment newTripDialog = new NewTripFragment();
+            newTripDialog.show(getFragmentManager(), "New Trip");
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -187,6 +190,9 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+        private RoadtripMapFragment mapFragment;
+        private RoadtripFeedFragment feedFragment;
+
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -196,10 +202,14 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             if (position == 0) {
-                return RoadtripMapFragment.newInstance();
+                if(mapFragment == null)
+                    mapFragment = RoadtripMapFragment.newInstance();
+                return mapFragment;
             }
             if (position == 1) {
-                return RoadtripFeedFragment.newInstance(1);
+                if(feedFragment == null)
+                    feedFragment = RoadtripFeedFragment.newInstance(1); //TODO read the real id's here
+                return feedFragment;
             }
             return null;
         }
