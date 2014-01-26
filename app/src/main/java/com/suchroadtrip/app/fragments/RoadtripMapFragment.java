@@ -2,11 +2,10 @@ package com.suchroadtrip.app.fragments;
 
 import android.app.Fragment;
 import android.content.Context;
-<<<<<<< HEAD
 import android.graphics.Typeface;
-=======
+
 import android.database.Cursor;
->>>>>>> 546866dbd683ee8a20cd2303eda8255274fe6d7a
+
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
