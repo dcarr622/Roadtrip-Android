@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import com.suchroadtrip.app.LocationMonitorService;
 import com.suchroadtrip.app.R;
 import com.suchroadtrip.app.data.TripAdapter;
+import com.suchroadtrip.app.fragments.NewTripFragment;
 import com.suchroadtrip.app.fragments.RoadtripFeedFragment;
 import com.suchroadtrip.app.fragments.RoadtripMapFragment;
 import com.suchroadtrip.lib.RTApi;
@@ -132,6 +133,11 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+            return true;
+        }
+        if (id == R.id.action_new_trip) {
+            NewTripFragment newTripDialog = new NewTripFragment();
+            newTripDialog.show(getFragmentManager(), "New Trip");
             return true;
         }
         return super.onOptionsItemSelected(item);
