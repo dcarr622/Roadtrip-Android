@@ -2,7 +2,8 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="10dp">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -10,27 +11,44 @@
         android:layout_height="50dp"
         android:id="@+id/twitter_sign_in_button"
         android:background="@drawable/rounded_rectangle"
-        android:paddingLeft="10dp"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:layout_marginBottom="10dp">
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:id="@+id/imageView"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/twitter_bird_white"
-            android:paddingLeft="10dp" />
+        <GridLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:rowCount="1"
+            android:columnCount="3">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/login_with_twitter"
-            android:id="@+id/textView"
-            android:layout_weight="0.75"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            android:fontFamily="sans-serif-light" />
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/imageView"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/twitter_bird_white"
+                android:layout_marginLeft="8dp" />
+
+            <TextView
+                android:layout_width="271dp"
+                android:layout_height="match_parent"
+                android:text="@string/login_with_twitter"
+                android:id="@+id/textView"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:fontFamily="sans-serif-light"
+                android:layout_weight="0.08"
+                android:layout_gravity="center_vertical" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/imageView5"
+                android:layout_gravity="center_vertical|right"
+                android:src="@drawable/placeholder4"
+                android:layout_marginRight="5dp" />
+        </GridLayout>
+
     </LinearLayout>
 
 </LinearLayout>
