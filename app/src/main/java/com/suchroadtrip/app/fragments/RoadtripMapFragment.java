@@ -15,6 +15,9 @@ public class RoadtripMapFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (!getActivity().getActionBar().isShowing())
+            getActivity().getActionBar().show();
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_roadtripmap, container, false);
     }

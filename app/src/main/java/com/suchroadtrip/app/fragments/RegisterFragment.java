@@ -289,7 +289,7 @@ public class RegisterFragment extends Fragment {
                 FragmentManager fragmentManager = getFragmentManager();
                 Fragment socialFragment = SocialFragment.newInstance();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(android.R.id.content, socialFragment);
+                fragmentTransaction.replace(android.R.id.content, socialFragment);
                 fragmentTransaction.commit();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

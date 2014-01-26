@@ -44,6 +44,9 @@ public class RoadtripFeedFragment extends Fragment implements LoaderManager.Load
 
         getLoaderManager().initLoader(0, null, this);
 
+        if (!getActivity().getActionBar().isShowing())
+            getActivity().getActionBar().show();
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_roadtripfeed, container, false);
     }

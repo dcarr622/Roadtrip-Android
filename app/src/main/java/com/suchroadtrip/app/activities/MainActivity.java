@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -20,6 +21,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.suchroadtrip.app.LocationMonitorService;
 import com.suchroadtrip.app.R;
@@ -72,13 +74,24 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
             MainActivity.this.startActivity(loginIntent);
         }
 
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Alegreya.ttf");
+        int titleId = getResources().getIdentifier("action_bar_title", "id",
+                "android");
+        TextView actionBarTitle = (TextView) findViewById(titleId);
+        actionBarTitle.setTextColor(getResources().getColor(R.color.white));
+        actionBarTitle.setTypeface(typeface);
+        actionBarTitle.setTextSize(30);
+        actionBarTitle.setPadding(0,0,0,10);
+
+        getActionBar().setDisplayShowHomeEnabled(false);
+
         setContentView(R.layout.activity_main);
 
         getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 
 //        int titleID = getResources().getIdentifier("action_bar_title", "id", "android);");
 //        TextView titleTextView = (TextView) findViewById(titleID);
-//        Typeface tf = Typeface.createFromAsset(getAssets(), "@asset/AlegreyaSans-Black.ttf");
+//        Typeface tf = Typeface.createFromAsset(getAssets(), "@asset/Alegreya.ttf");
 //       titleTextView.setTypeface(tf);
 
         getLoaderManager().initLoader(0, null, this);

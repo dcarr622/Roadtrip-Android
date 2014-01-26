@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:id="@+id/twitter_sign_in_button"
-        android:background="@drawable/rounded_rectangle"
+        android:background="@drawable/rounded_rectangle_twitter"
         android:weightSum="1"
         android:layout_marginBottom="10dp">
 
