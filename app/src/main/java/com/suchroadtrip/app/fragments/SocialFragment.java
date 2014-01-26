@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.suchroadtrip.app.R;
 import com.suchroadtrip.app.activities.LoginActivity;
 import com.suchroadtrip.app.activities.LoginToTwitter;
+import com.suchroadtrip.app.activities.MainActivity;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -50,10 +51,17 @@ public class SocialFragment extends Fragment {
         return new SocialFragment();
     }
 
-    public class GetRequestTokenTask extends AsyncTask<Void, Void, Void> {
+    public class GetRequestTokenTask extends AsyncTask<Void, Void, Boolean> {
 
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected void onPostExecute(final Boolean success) {
+            getActivity().finish();
+            Intent mainActivityIntent = new Intent(getActivity(), MainActivity.class);
+            getActivity().startActivity(mainActivityIntent);
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
             twitter = TwitterFactory.getSingleton();
             twitter.setOAuthConsumer(
                     getString(R.string.TWITTER_CONSUMER_KEY),
@@ -66,7 +74,7 @@ public class SocialFragment extends Fragment {
             } catch (TwitterException e) {
                 e.printStackTrace();
             }
-            return null;
+            return true;
         }
     }
 
