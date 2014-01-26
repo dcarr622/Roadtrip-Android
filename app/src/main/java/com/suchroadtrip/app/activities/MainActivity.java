@@ -28,7 +28,6 @@ import com.suchroadtrip.app.fragments.RoadtripMapFragment;
 import com.suchroadtrip.lib.RTApi;
 import com.suchroadtrip.lib.RTContentProvider;
 
-import java.io.IOException;
 import java.util.Locale;
 
 public class MainActivity extends Activity implements ActionBar.OnNavigationListener, LoaderManager.LoaderCallbacks<Cursor>, RTApi.LoginCallback {
@@ -74,7 +73,6 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         super.onCreate(savedInstanceState);
 
         sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
-        sharedPrefs.edit().putString("username", "vmagro").putString("password", "wowsuchapp").commit();
         isLoggedIn = sharedPrefs.getBoolean("userLoggedInState", false);
         //TODO remove this
 //        isLoggedIn = true;
@@ -111,12 +109,6 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.main_pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        try {
-            RTApi.login(this, this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
     }
 
