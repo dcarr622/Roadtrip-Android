@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,6 @@ import android.view.ViewGroup;
 import com.suchroadtrip.app.R;
 import com.suchroadtrip.app.activities.LoginActivity;
 import com.suchroadtrip.app.activities.LoginToTwitter;
-import com.suchroadtrip.app.activities.MainActivity;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -56,12 +56,11 @@ public class SocialFragment extends Fragment {
         @Override
         protected void onPostExecute(final Boolean success) {
             getActivity().finish();
-            Intent mainActivityIntent = new Intent(getActivity(), MainActivity.class);
-            getActivity().startActivity(mainActivityIntent);
         }
 
         @Override
         protected Boolean doInBackground(Void... voids) {
+            Log.d("Twitter", "doInBackground");
             twitter = TwitterFactory.getSingleton();
             twitter.setOAuthConsumer(
                     getString(R.string.TWITTER_CONSUMER_KEY),
@@ -80,6 +79,7 @@ public class SocialFragment extends Fragment {
 
 
     private void launchLoginWebView(RequestToken requestToken) {
+        Log.d("Twitter", "launchLoginWebView");
         Intent intent = new Intent(getActivity(), LoginToTwitter.class);
         intent.putExtra(LoginActivity.AUTHENTICATION_URL_KEY, requestToken.getAuthenticationURL());
         getActivity().startActivityForResult(intent, LoginActivity.LOGIN_TO_TWITTER_REQUEST);
