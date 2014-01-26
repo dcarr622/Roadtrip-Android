@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#aaaaaa"
     android:paddingTop="20dp">
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="#AAAAAA">
@@ -18,24 +19,26 @@
             android:layout_height="80dp"
             android:id="@+id/author_image"
             android:src="@drawable/placeholder3"
+            android:layout_marginLeft="10dp"
             android:layout_marginRight="20dp" />
 
         <FrameLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp">
 
             <com.google.android.gms.maps.MapView
-                android:layout_width="250dp"
-                android:layout_height="250dp"
+                android:layout_width="fill_parent"
+                android:layout_height="225dp"
                 android:id="@+id/map_view"
                 android:layout_gravity="center_horizontal|bottom"
                 android:src="@drawable/placeholder2"
                 android:cropToPadding="false"
-                android:baselineAlignBottom="false"/>
+                android:baselineAlignBottom="false" />
 
             <LinearLayout
                 android:orientation="vertical"
-                android:layout_width="250dp"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|top"
                 android:id="@+id/linearLayout1"
@@ -48,7 +51,7 @@
 
                     <LinearLayout
                         android:orientation="vertical"
-                        android:layout_width="250dp"
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/detail_layout"
                         android:src="@drawable/placeholder1"
@@ -60,7 +63,43 @@
                         android:focusableInTouchMode="false"
                         android:layout_gravity="center_horizontal|top"
                         android:padding="10dp"
-                        android:background="@color/white" />
+                        android:background="@color/white">
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="70dp"
+                            android:text='"lol foss"'
+                            android:id="@+id/postText"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:fontFamily="sans-serif-light"
+                            android:singleLine="true"
+                            android:textSize="18dp" />
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+                                android:text="via Twitter"
+                                android:id="@+id/networkText"
+                                android:gravity="center_vertical|left"
+                                android:fontFamily="sans-serif-light"
+                                android:paddingLeft="10dp" />
+
+                            <TextView
+                                android:layout_width="fill_parent"
+                                android:layout_height="30dp"
+                                android:text="By @ijwhelan"
+                                android:id="@+id/authorText"
+                                android:gravity="center_vertical|right"
+                                android:fontFamily="sans-serif-light"
+                                android:paddingRight="10dp" />
+                        </LinearLayout>
+                    </LinearLayout>
 
                     <LinearLayout
                         android:orientation="horizontal"
@@ -73,7 +112,8 @@
                     </LinearLayout>
                 </FrameLayout>
 
-                <Button android:layout_width="70dp"
+                <Button
+                    android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:rotation="180"
                     android:background="@drawable/arrow_up"
