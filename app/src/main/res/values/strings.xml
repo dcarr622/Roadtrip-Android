@@ -19,6 +19,7 @@
     <string name="roadtrip_user_check">http://suchroadtrip.com/users/currentUser</string>
     <string name="login_title">Log In</string>
     <string name="register_title">Register</string>
+    <string name="social_title">Social</string>
     <string name="prompt_user">User</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="action_sign_in_register">Sign in or Register</string>

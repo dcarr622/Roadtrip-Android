@@ -82,7 +82,7 @@ public class LoginActivity extends Activity implements ActionBar.TabListener {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.main_pager);
+        mViewPager = (ViewPager) findViewById(R.id.login_pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         // When swiping between different sections, select the corresponding
@@ -177,7 +177,7 @@ public class LoginActivity extends Activity implements ActionBar.TabListener {
 
         @Override
         public int getCount() {
-            // Show 2 total pages.
+            // Show 3 total pages.
             return 3;
         }
 
@@ -191,6 +191,8 @@ public class LoginActivity extends Activity implements ActionBar.TabListener {
                 return getString(R.string.login_title).toUpperCase(l);
             case 1:
                 return getString(R.string.register_title).toUpperCase(l);
+            case 2:
+                return getString(R.string.social_title).toUpperCase(l);
         }
         return null;
     }
