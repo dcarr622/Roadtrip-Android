@@ -19,6 +19,7 @@ import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -30,6 +31,7 @@ import com.suchroadtrip.app.fragments.RoadtripMapFragment;
 import com.suchroadtrip.lib.RTApi;
 import com.suchroadtrip.lib.RTContentProvider;
 
+import java.io.IOException;
 import java.util.Locale;
 
 public class MainActivity extends Activity implements ActionBar.OnNavigationListener, LoaderManager.LoaderCallbacks<Cursor>, RTApi.LoginCallback {
@@ -84,6 +86,12 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
             MainActivity.this.startActivity(loginIntent);
         }
 
+        try {
+            RTApi.login(this, this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Alegreya.ttf");
         int titleId = getResources().getIdentifier("action_bar_title", "id",
                 "android");
@@ -120,8 +128,28 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(TAG, "onCreateOptionsMenu");
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+
+        if (sharedPrefs.getBoolean("tripActive", false)) {
+            Log.d(TAG, "Trip is active");
+            MenuItem stop = menu.findItem(R.id.action_stop);
+            stop.setVisible(true);
+
+            MenuItem startnew = menu.findItem(R.id.action_new_trip);
+            startnew.setVisible(false);
+        }
+        else if (sharedPrefs.getBoolean("tripActive", true)) {
+            Log.d(TAG, "Trip is not active");
+            MenuItem stop = menu.findItem(R.id.action_stop);
+            stop.setVisible(false);
+
+            MenuItem startnew = menu.findItem(R.id.action_new_trip);
+            startnew.setVisible(true);
+        }
+
         return true;
     }
 
