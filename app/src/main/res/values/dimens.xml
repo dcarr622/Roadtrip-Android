@@ -5,4 +5,7 @@
 
     <dimen name="card_photo_size">200dp</dimen>
 
+    <dimen name="map_width">300dp</dimen>
+    <dimen name="map_height">150dp</dimen>
+
     </resources>
