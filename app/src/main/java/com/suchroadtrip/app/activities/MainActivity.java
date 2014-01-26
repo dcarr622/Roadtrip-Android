@@ -55,7 +55,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
     Handler timerHandler = null;
     private Date time = new Date(0);
     private boolean moving = false;
-    private double totalDistance = 0.00;
+    private double totalDistance = 0.01;
     private Location lastLocation = null;
     private SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.US);
     private Runnable everySecond = new Runnable() {
@@ -63,6 +63,9 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         public void run() {
             if(moving) {
                 time.setTime(time.getTime() + 1000);
+                if (lastLocation == null) {
+                    lastLocation = RTApi.getLastLocation();
+                }
                 if (lastLocation != null) {
                     Location currentLocation = RTApi.getLastLocation();
                     if (currentLocation != null) {
@@ -82,11 +85,15 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         return instance;
     }
 
-    protected void setDistTime(String text, Double dist) {
+    protected void setDistTime(String time, Double dist) {
         TextView elapsedTime = (TextView) findViewById(R.id.time_elapsed_text_view);
-        elapsedTime.setText(text);
+        elapsedTime.setText(time);
         TextView distanceTraveled = (TextView) findViewById(R.id.distance_traveled_text_view);
-        elapsedTime.setText(dist.toString());
+        dist *= 0.000621371;
+        if (dist < 0.01) {
+            dist = 0.0;
+        }
+        distanceTraveled.setText(String.format("%.2g%n", dist));
     }
 
     /**
@@ -168,9 +175,6 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.main_pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        lastLocation = RTApi.getLastLocation();
-
     }
 
     public void startTimer() {

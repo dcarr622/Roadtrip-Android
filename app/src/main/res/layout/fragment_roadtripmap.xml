@@ -31,7 +31,7 @@
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="DISTANCE TRAVELED"
+                    android:text="MILES TRAVELED"
                     android:id="@+id/textView"
                     android:fontFamily="sans-serif-light"
                     android:gravity="center_horizontal"
@@ -40,7 +40,7 @@
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="61dp"
-                    android:text="120.9mi"
+                    android:text="0.0"
                     android:id="@+id/distance_traveled_text_view"
                     android:fontFamily="sans-serif-light"
                     android:gravity="center_horizontal"
