@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.suchroadtrip.app.LocationMonitorService;
 import com.suchroadtrip.app.R;
 import com.suchroadtrip.app.data.TripAdapter;
 import com.suchroadtrip.app.fragments.RoadtripFeedFragment;
@@ -100,11 +101,18 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         Criteria criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
         String provider = mgr.getBestProvider(criteria, true);
-        Location loc = mgr.getLastKnownLocation(provider);
+        final Location loc = mgr.getLastKnownLocation(provider);
         RTApi.startTrip(this, "Test Trip", loc, "Las Vegas", new RTApi.StartTripCallback() {
             @Override
-            public void tripStarted(int id) {
+            public void tripStarted(String id) {
                 Log.d(TAG, "started trip with id " + id);
+                if(id == null){
+                    Log.e(TAG, "null trip id");
+                    return;
+                }
+                Intent intent = new Intent(MainActivity.this, LocationMonitorService.class);
+                intent.putExtra("tripId", id);
+                startService(intent);
             }
         });
 

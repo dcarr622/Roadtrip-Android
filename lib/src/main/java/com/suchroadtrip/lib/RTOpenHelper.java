@@ -48,7 +48,7 @@ public class RTOpenHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_SOCIAL = "CREATE TABLE " + TABLE_SOCIAL + " (" +
             KEY_ID + " INTEGER PRIMARY KEY," +
-            KEY_TRIP_ID + " INTEGER NOT NULL," +
+            KEY_TRIP_ID + " TEXT NOT NULL," +
             KEY_TIME + " DATETIME," +
             KEY_LAT + " REAL," +
             KEY_LNG + " REAL," +
@@ -63,7 +63,7 @@ public class RTOpenHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_PHOTO = "CREATE TABLE " + TABLE_PHOTO + " (" +
             KEY_ID + " INTEGER PRIMARY KEY," +
-            KEY_TRIP_ID + " INTEGER NOT NULL," +
+            KEY_TRIP_ID + " TEXT NOT NULL," +
             KEY_TIME + " DATETIME ," +
             KEY_LAT + " REAL," +
             KEY_LNG + " REAL," +
@@ -75,7 +75,7 @@ public class RTOpenHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_LOCATION = "CREATE TABLE " + TABLE_LOCATION + " (" +
             KEY_ID + " INTEGER PRIMARY KEY," +
-            KEY_TRIP_ID + " INTEGER NOT NULL," +
+            KEY_TRIP_ID + " TEXT NOT NULL," +
             KEY_TIME + " DATETIME," +
             KEY_NAME + " TEXT," +
             KEY_LAT + " REAL," +
