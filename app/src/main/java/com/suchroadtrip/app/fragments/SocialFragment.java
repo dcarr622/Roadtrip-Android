@@ -72,9 +72,9 @@ public class SocialFragment extends Fragment {
 
 
     private void launchLoginWebView(RequestToken requestToken) {
-        Intent intent = new Intent(getActivity().getApplicationContext(), LoginToTwitter.class);
+        Intent intent = new Intent(getActivity(), LoginToTwitter.class);
         intent.putExtra(LoginActivity.AUTHENTICATION_URL_KEY, requestToken.getAuthenticationURL());
-        startActivityForResult(intent, LoginActivity.LOGIN_TO_TWITTER_REQUEST);
+        getActivity().startActivityForResult(intent, LoginActivity.LOGIN_TO_TWITTER_REQUEST);
     }
 
 

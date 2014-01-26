@@ -4,7 +4,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Fragment;
-import android.content.Intent;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -22,7 +23,6 @@ import android.widget.TextView;
 import com.loopj.android.http.PersistentCookieStore;
 import com.suchroadtrip.app.R;
 import com.suchroadtrip.app.activities.LoginActivity;
-import com.suchroadtrip.app.activities.MainActivity;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -282,13 +282,15 @@ public class RegisterFragment extends Fragment {
             showProgress(false);
 
             if (success) {
-                getActivity().finish();
                 editor = LoginActivity.sharedPrefs.edit();
                 editor.putBoolean("userLoggedInState", true);
 //                editor.putInt("currentLoggedInUserId", userId);
                 editor.commit();
-                Intent mainActivityIntent = new Intent(getActivity(), MainActivity.class);
-                getActivity().startActivity(mainActivityIntent);
+                FragmentManager fragmentManager = getFragmentManager();
+                Fragment socialFragment = SocialFragment.newInstance();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(android.R.id.content, socialFragment);
+                fragmentTransaction.commit();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

@@ -4,6 +4,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -104,6 +106,18 @@ public class LoginFragment extends Fragment {
                 attemptLogin();
             }
         });
+
+        view.findViewById(R.id.new_account_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = getFragmentManager();
+                Fragment registerFragment = RegisterFragment.newInstance();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(android.R.id.content, registerFragment);
+                fragmentTransaction.commit();
+            }
+        });
+
         return view;
     }
 

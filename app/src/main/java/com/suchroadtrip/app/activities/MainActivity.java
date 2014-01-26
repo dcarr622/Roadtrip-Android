@@ -64,7 +64,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         sharedPrefs.edit().putString("username", "vmagro").putString("password", "wowsuchapp").commit();
         isLoggedIn = sharedPrefs.getBoolean("userLoggedInState", false);
         //TODO remove this
-        isLoggedIn = true;
+//        isLoggedIn = true;
 
         if (!isLoggedIn) {
             Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
