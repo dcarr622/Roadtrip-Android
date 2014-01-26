@@ -12,14 +12,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
 import com.suchroadtrip.app.R;
 import com.suchroadtrip.lib.CircleTransform;
 import com.suchroadtrip.lib.RTOpenHelper;
+import com.suchroadtrip.lib.Util;
 
 /**
  * Created by david on 1/25/14.
@@ -55,13 +52,8 @@ public class TripEventAdapter extends CursorAdapter {
             Picasso picasso = Picasso.with(context);
 
             if (tag.map != null) {
-                LatLng latLng = new LatLng(c.getDouble(c.getColumnIndex(RTOpenHelper.KEY_LAT)), c.getDouble(c.getColumnIndex(RTOpenHelper.KEY_LNG)));
-                tag.map.onCreate(null);
-                tag.map.onResume();
-                tag.map.getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                tag.map.getMap().addMarker(new MarkerOptions().position(latLng).title(""));
-                tag.map.getMap().getUiSettings().setZoomControlsEnabled(false);
-                tag.map.getMap().getUiSettings().setAllGesturesEnabled(false);
+                String url = Util.buildMapUrl(c.getDouble(c.getColumnIndex(RTOpenHelper.KEY_LAT)), c.getDouble(c.getColumnIndex(RTOpenHelper.KEY_LNG)));
+                picasso.load(url).resizeDimen(R.dimen.map_width, R.dimen.map_height).centerCrop().into(tag.map);
             }
 
             picasso.load("http://vinnie.io/me.jpg").transform(new CircleTransform()).into(tag.author);
@@ -87,7 +79,7 @@ public class TripEventAdapter extends CursorAdapter {
 
         private Type type;
 
-        public MapView map;
+        public ImageView map;
 
         public LinearLayout detailLayout;
 
@@ -100,7 +92,7 @@ public class TripEventAdapter extends CursorAdapter {
         public EventTag(Context context, Type type, View v) {
             this.type = type;
 
-            map = (MapView) v.findViewById(R.id.map_view);
+            map = (ImageView) v.findViewById(R.id.map_image);
             author = (ImageView) v.findViewById(R.id.author_image);
             detailLayout = (LinearLayout) v.findViewById(R.id.card_detail_content);
 

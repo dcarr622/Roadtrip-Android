@@ -3,7 +3,6 @@ package com.suchroadtrip.app.fragments;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,7 +22,6 @@ import android.widget.LinearLayout;
 
 import com.suchroadtrip.app.LocationMonitorService;
 import com.suchroadtrip.app.R;
-import com.suchroadtrip.app.activities.LoginActivity;
 import com.suchroadtrip.lib.RTApi;
 
 import java.util.ArrayList;
@@ -108,7 +106,10 @@ public class NewTripFragment extends DialogFragment {
         String provider = mgr.getBestProvider(criteria, true);
         final Location loc = mgr.getLastKnownLocation(provider);
 
-        RTApi.startTrip(getActivity(), tripname, loc, destination,  new RTApi.StartTripCallback() {
+         /* Show/hide proper menu bar icons */
+        getActivity().invalidateOptionsMenu();
+
+        RTApi.startTrip(getActivity(), tripname, loc, destination, new RTApi.StartTripCallback() {
             @Override
             public void tripStarted(Context context, String id) {
                 Log.d(TAG, "started trip with id " + id);
@@ -120,10 +121,12 @@ public class NewTripFragment extends DialogFragment {
                 intent.putExtra("tripId", id);
                 context.startService(intent);
 
+                /* Set shared prefs to indicate Trip in progress */
                 editor = context.getSharedPreferences("roadtrip_preferences", Context.MODE_PRIVATE).edit();
                 editor.putBoolean("tripActive", true);
                 editor.putString("activeTrip", id);
                 editor.commit();
+
             }
         });
 

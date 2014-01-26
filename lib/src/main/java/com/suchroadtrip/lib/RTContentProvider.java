@@ -43,15 +43,15 @@ public class RTContentProvider extends ContentProvider {
     static {
         uriMatcher.addURI(AUTHORITY, RTOpenHelper.TABLE_TRIPS, MATCH_TRIP);
 
-        uriMatcher.addURI(AUTHORITY, RTOpenHelper.TABLE_SOCIAL + "/#", MATCH_SOCIAL_UPDATE_TRIP);
-        uriMatcher.addURI(AUTHORITY, RTOpenHelper.TABLE_PHOTO + "/#", MATCH_PHOTO_TRIP);
-        uriMatcher.addURI(AUTHORITY, RTOpenHelper.TABLE_LOCATION + "/#", MATCH_LOCATION_TRIP);
+        uriMatcher.addURI(AUTHORITY, RTOpenHelper.TABLE_SOCIAL + "/*", MATCH_SOCIAL_UPDATE_TRIP);
+        uriMatcher.addURI(AUTHORITY, RTOpenHelper.TABLE_PHOTO + "/*", MATCH_PHOTO_TRIP);
+        uriMatcher.addURI(AUTHORITY, RTOpenHelper.TABLE_LOCATION + "/*", MATCH_LOCATION_TRIP);
 
         uriMatcher.addURI(AUTHORITY, RTOpenHelper.TABLE_SOCIAL, MATCH_SOCIAL);
         uriMatcher.addURI(AUTHORITY, RTOpenHelper.TABLE_PHOTO, MATCH_PHOTO);
         uriMatcher.addURI(AUTHORITY, RTOpenHelper.TABLE_LOCATION, MATCH_LOCATION);
 
-        uriMatcher.addURI(AUTHORITY, "events/#", MATCH_ALL_EVENTS);
+        uriMatcher.addURI(AUTHORITY, "events/*", MATCH_ALL_EVENTS);
     }
 
     private RTOpenHelper dbHelper = null;
