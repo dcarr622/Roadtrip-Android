@@ -42,7 +42,7 @@
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
+x
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
@@ -65,8 +65,7 @@
 
         <receiver android:name="com.suchroadtrip.app.NewPhotoReceiver" >
             <intent-filter>
-                <action android:name="com.android.camera.NEW_PICTURE" />
-
+                <action android:name="com.android.camera.NEW_PICTURE"   />
                 <data android:mimeType="image/*" />
             </intent-filter>
         </receiver>
