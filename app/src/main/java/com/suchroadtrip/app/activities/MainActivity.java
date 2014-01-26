@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.suchroadtrip.app.R;
 import com.suchroadtrip.app.data.TripAdapter;
+import com.suchroadtrip.app.fragments.AddFriendDialog;
 import com.suchroadtrip.app.fragments.NewTripFragment;
 import com.suchroadtrip.app.fragments.RoadtripFeedFragment;
 import com.suchroadtrip.app.fragments.RoadtripMapFragment;
@@ -221,6 +222,11 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         if (id == R.id.action_settings) {
             return true;
         }
+        if (id == R.id.action_add_person) {
+            AddFriendDialog newFriend = new AddFriendDialog();
+            newFriend.show(getFragmentManager(), "Add Friend");
+            return true;
+        }
         if (id == R.id.action_new_trip) {
             NewTripFragment newTripDialog = new NewTripFragment();
             newTripDialog.show(getFragmentManager(), "New Trip");
@@ -229,6 +235,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         if (id == R.id.action_stop) {
             getSharedPreferences("roadtrip_preferences", MODE_PRIVATE).edit().remove("activeTrip").putBoolean("tripActive", false).commit();
             Toast.makeText(getApplicationContext(), "Trip stopped", Toast.LENGTH_SHORT).show();
+            stopTimer();
             invalidateOptionsMenu();
             return true;
         }

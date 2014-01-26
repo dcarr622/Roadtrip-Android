@@ -9,14 +9,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
@@ -25,9 +21,6 @@ import com.suchroadtrip.app.LocationMonitorService;
 import com.suchroadtrip.app.R;
 import com.suchroadtrip.app.activities.MainActivity;
 import com.suchroadtrip.lib.RTApi;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by david on 1/25/14.
@@ -38,11 +31,11 @@ public class NewTripFragment extends DialogFragment implements
 
     private static final String TAG = "NewTripFragment";
 
-    List<EditText> personNames;
+//    List<EditText> personNames;
     EditText tripName;
     EditText destination;
     EditText box1;
-    LinearLayout nameBoxes;
+//    LinearLayout nameBoxes;
 
     /*For checking user logged-in status*/
     private static final String APP_SHARED_PREFS = "roadtrip_preferences";
@@ -68,11 +61,11 @@ public class NewTripFragment extends DialogFragment implements
         tripName = (EditText) view.findViewById(R.id.trip_name);
         destination = (EditText) view.findViewById(R.id.destination);
 
-        personNames = new ArrayList<EditText>();
+//        personNames = new ArrayList<EditText>();
 
-        box1 = ((EditText) view.findViewById(R.id.friend_box));
-        personNames.add(box1);
-        nameBoxes = (LinearLayout) view.findViewById(R.id.name_boxes_list);
+//        box1 = ((EditText) view.findViewById(R.id.friend_box));
+//        personNames.add(box1);
+//        nameBoxes = (LinearLayout) view.findViewById(R.id.name_boxes_list);
 
         builder.setView(view).setPositiveButton("Start", new DialogInterface.OnClickListener() {
             @Override
@@ -86,27 +79,30 @@ public class NewTripFragment extends DialogFragment implements
             }
         });
 
-        ((EditText) view.findViewById(R.id.friend_box)).addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                EditText newName = new EditText(getActivity());
-                LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                nameBoxes.setLayoutParams(p);
-                newName.setHint(R.string.friends_username);
-                nameBoxes.addView(newName);
-                personNames.add(newName);
-            }
-        });
+//        ((EditText) view.findViewById(R.id.friend_box)).addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//                EditText newName = new EditText(getActivity());
+//                LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//                nameBoxes.setLayoutParams(p);
+//                newName.setHint(R.string.friends_username);
+//                nameBoxes.addView(newName);
+//                personNames.add(newName);
+//            }
+////        });
+//
+          /*Get shared prefs*/
+        sharedPrefs = getActivity().getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
 
         return builder.create();
     }
@@ -144,9 +140,26 @@ public class NewTripFragment extends DialogFragment implements
             }
         });
 
+//        HttpPost postRequest = new HttpPost(getString(R.string.roadtrip_add_friend));
+//        DefaultHttpClient httpClient = new DefaultHttpClient();
+
 //        for (EditText nameBox: personNames) {
-//            if (nameBox.getEditableText().toString() != null && nameBox.getEditableText().toString().length() > 1) {
-//
+//            if (nameBox.getText().toString() != null) {
+//                String friend = nameBox.getText().toString();
+//                String id = getActivity().getApplicationContext().getSharedPreferences("roadtrip_preferences", Context.MODE_PRIVATE).getString("activeTrip", "not_found");
+//                Log.v("Friend to Add", friend);
+//                Log.v("ID of Friend to add", id);
+//                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+//                nameValuePairs.add(new BasicNameValuePair(" id", id));
+//                nameValuePairs.add(new BasicNameValuePair("friendName", friend));
+//                HttpResponse response = null;
+//                try {
+//                    postRequest.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+//                    response = httpClient.execute(postRequest);
+//                    Log.d("Friend Response", String.valueOf(response.getStatusLine().getStatusCode()));
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
 //            }
 //        }
     }

@@ -9,14 +9,15 @@
     <string name="title_activity_twitter_web_view">TwitterWebViewActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="twitter_signed_in">You are already signed into Twitter!</string>
-    <string name="TWITTER_CONSUMER_KEY">cL46Cw9Yux9K6VfwUShsw</string>
-    <string name="TWITTER_CONSUMER_SECRET">LUz9s7ZR0JfPHspbbJ8t3iptojl26qbHwk2hZzlCXEY</string>
+    <string name="TWITTER_CONSUMER_KEY">jHDL7q3H55pVBVIbnK4oQ</string>
+    <string name="TWITTER_CONSUMER_SECRET">jDjVTazFjCjR9dMzuPXE04ZDrOBEnzKJU0VyvA49O0</string>
     <string name="TWITTER_CALLBACK_URL">http://suchroadtrip.com/</string>
     <string name="title_activity_login_to_twitter">LoginToTwitter</string>
     <string name="twitter_webview_title">Authorize Twitter</string>
     <string name="roadtrip_login_url">http://suchroadtrip.com/users/login</string>
     <string name="roadtrip_signup_url">http://suchroadtrip.com/users/signup</string>
     <string name="roadtrip_user_check">http://suchroadtrip.com/users/currentUser</string>
+    <string name="roadtrip_add_friend">http://suchroadtrip.com/trips/addFriend</string>
     <string name="login_title">Log In</string>
     <string name="register_title">Register</string>
     <string name="create_account">Don\'t have an account? Let\'s make one!</string>
