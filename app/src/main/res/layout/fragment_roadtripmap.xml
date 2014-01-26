@@ -4,10 +4,97 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
-    <fragment
-        android:id="@+id/map"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        class="com.google.android.gms.maps.MapFragment" />
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <fragment
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            class="com.google.android.gms.maps.MapFragment" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="96dp"
+            android:background="@drawable/rectangle_semitransparent_rounded_corners"
+            android:layout_margin="15dp">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="175dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="DISTANCE TRAVELED"
+                    android:id="@+id/textView"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center_horizontal"
+                    android:layout_marginTop="15dp" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="61dp"
+                    android:text="120.9mi"
+                    android:id="@+id/distance_traveled_text_view"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center_horizontal"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginRight="10dp"
+                    android:textSize="40dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_height="fill_parent"
+                android:layout_width="2dp"
+                android:background="#d6d6d6"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="175dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TIME ELAPSED"
+                    android:id="@+id/textView2"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center_horizontal"
+                    android:layout_marginTop="15dp" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="61dp"
+                    android:text="4:37:01"
+                    android:id="@+id/time_elapsed_text_view"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center_horizontal"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginRight="10dp"
+                    android:textSize="40dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/my_location_button"
+            android:layout_gravity="right|bottom"
+            android:background="@drawable/rectangle_semitransparent_rounded_corners"
+            android:layout_margin="15dp"
+            android:drawableLeft="@drawable/mylocation_button"
+            android:paddingLeft="9dp"/>
+    </FrameLayout>
 
 </RelativeLayout>
