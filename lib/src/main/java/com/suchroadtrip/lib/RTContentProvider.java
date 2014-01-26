@@ -88,9 +88,8 @@ public class RTContentProvider extends ContentProvider {
                 Log.d(TAG, Uri.withAppendedPath(SOCIAL_URI, id).toString());
                 Cursor socialCursor = query(Uri.withAppendedPath(SOCIAL_URI, id), projection, selection, selectionArgs, sortOrder);
                 Log.d(TAG, "found " + socialCursor.getCount() + " social events");
-                Cursor locationCursor = query(Uri.withAppendedPath(LOCATION_URI, id), projection, selection, selectionArgs, sortOrder);
                 Cursor photoCursor = query(Uri.withAppendedPath(PHOTO_URI, id), projection, selection, selectionArgs, sortOrder);
-                Cursor[] cursors = new Cursor[]{socialCursor, locationCursor, photoCursor};
+                Cursor[] cursors = new Cursor[]{socialCursor, photoCursor};
                 notificationUri = ALL_EVENTS_URI;
                 MergeCursor mergeCursor = new MergeCursor(cursors);
                 mergeCursor.setNotificationUri(getContext().getContentResolver(), notificationUri);
