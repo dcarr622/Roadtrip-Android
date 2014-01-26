@@ -18,7 +18,6 @@ public class LoginToTwitter extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_to_twitter);
 
-
         Intent intent = getIntent();
         String mUrl = intent.getStringExtra(LoginActivity.AUTHENTICATION_URL_KEY);
 
