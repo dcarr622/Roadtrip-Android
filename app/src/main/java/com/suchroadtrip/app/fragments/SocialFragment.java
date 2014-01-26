@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.suchroadtrip.app.R;
 import com.suchroadtrip.app.activities.LoginActivity;
 import com.suchroadtrip.app.activities.LoginToTwitter;
+import com.suchroadtrip.app.activities.MainActivity;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -37,6 +38,14 @@ public class SocialFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 loginToTwitter();
+            }
+        });
+
+        view.findViewById(R.id.next_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent mainActivityIntent = new Intent(getActivity(), MainActivity.class);
+                getActivity().startActivity(mainActivityIntent);
             }
         });
         return view;
@@ -82,7 +91,7 @@ public class SocialFragment extends Fragment {
         Log.d("Twitter", "launchLoginWebView");
         Intent intent = new Intent(getActivity(), LoginToTwitter.class);
         intent.putExtra(LoginActivity.AUTHENTICATION_URL_KEY, requestToken.getAuthenticationURL());
-        getActivity().startActivityForResult(intent, LoginActivity.LOGIN_TO_TWITTER_REQUEST);
+        startActivityForResult(intent, LoginActivity.LOGIN_TO_TWITTER_REQUEST);
     }
 
 

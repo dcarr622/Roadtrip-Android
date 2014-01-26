@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -36,6 +37,7 @@ public class LoginToTwitter extends Activity {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             if (url.startsWith(getString(R.string.TWITTER_CALLBACK_URL))) {
+                Log.d("LoginToTwitter", "shouldOverrideUrlLoading");
                 Intent intent;
                 intent = new Intent();
                 intent.putExtra(CALLBACK_URL_KEY, url);
