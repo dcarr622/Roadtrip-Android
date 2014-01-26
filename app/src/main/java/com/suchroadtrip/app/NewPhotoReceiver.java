@@ -3,6 +3,7 @@ package com.suchroadtrip.app;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -23,7 +24,11 @@ public class NewPhotoReceiver extends BroadcastReceiver {
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
         String provider = mgr.getBestProvider(criteria, true);
         Location loc = mgr.getLastKnownLocation(provider);
-        RTApi.addPicture(context, null, intent.getData(), loc);
+
+        SharedPreferences prefs = context.getSharedPreferences("roadtrip_preferences", Context.MODE_PRIVATE);
+        if (prefs.getBoolean("tripActive", false)) {
+            RTApi.addPicture(context, prefs.getString("activeTrip", null), intent.getData(), loc);
+        }
     }
 
 }

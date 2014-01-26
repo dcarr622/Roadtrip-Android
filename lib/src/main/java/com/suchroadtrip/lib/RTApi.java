@@ -35,6 +35,7 @@ public class RTApi {
     private static URL START_TRIP_URL;
     private static URL LOGIN_URL;
     private static URL ADD_SPOT_URL;
+    private static URL GRANT_ACCESS_URL;
 
     static {
         CookieManager cookieManager = new CookieManager();
@@ -43,6 +44,7 @@ public class RTApi {
             START_TRIP_URL = new URL(BASE_URL + "trips");
             LOGIN_URL = new URL(BASE_URL + "users/login");
             ADD_SPOT_URL = new URL(BASE_URL + "trips/addSpot");
+            GRANT_ACCESS_URL = new URL(BASE_URL + "trips/addFriend");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -207,6 +209,35 @@ public class RTApi {
                     cb.tripStarted(result);
                 else
                     cb.tripStarted(null);
+            }
+
+        }.execute();
+    }
+
+    public static void grantAccess(final String tripId, final String username) {
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                try {
+                    JSONObject json = new JSONObject();
+                    json.put("id", tripId);
+                    json.put("friendname", username);
+
+                    HttpURLConnection connection = (HttpURLConnection) GRANT_ACCESS_URL.openConnection();
+                    connection.setDoOutput(true);
+                    connection.setRequestMethod("POST");
+                    connection.setRequestProperty("Content-Type", "application/json");
+                    connection.getOutputStream().write(json.toString().getBytes());
+
+                    Log.d(TAG, "grantAccess request: " + json.toString());
+
+                    Log.d(TAG, "grantAccess response: " + connection.getResponseCode());
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                return null;
             }
 
         }.execute();

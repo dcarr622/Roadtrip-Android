@@ -72,7 +72,7 @@ public class TripEventAdapter extends CursorAdapter {
             switch (tag.getType()) {
                 case SOCIAL:
                     tag.socialPostText.setText(c.getString(c.getColumnIndex(RTOpenHelper.KEY_TEXT)));
-                    tag.socialAuthorText.setText(c.getString(c.getColumnIndex(RTOpenHelper.KEY_POSTER)));
+                    tag.socialAuthorText.setText(c.getString(c.getColumnIndex(RTOpenHelper.KEY_AUTHOR)));
                     tag.socialNetworkText.setText("via " + c.getString(c.getColumnIndex(RTOpenHelper.KEY_SOCIAL_SERVICE)));
                     break;
                 case PHOTO:
