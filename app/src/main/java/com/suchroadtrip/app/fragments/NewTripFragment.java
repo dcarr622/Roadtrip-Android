@@ -7,6 +7,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -22,6 +23,7 @@ import android.widget.LinearLayout;
 
 import com.suchroadtrip.app.LocationMonitorService;
 import com.suchroadtrip.app.R;
+import com.suchroadtrip.app.activities.LoginActivity;
 import com.suchroadtrip.lib.RTApi;
 
 import java.util.ArrayList;
@@ -40,6 +42,11 @@ public class NewTripFragment extends DialogFragment {
     EditText box1;
     LinearLayout nameBoxes;
 
+    /*For checking user logged-in status*/
+    private static final String APP_SHARED_PREFS = "roadtrip_preferences";
+    SharedPreferences sharedPrefs;
+    SharedPreferences.Editor editor;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -47,8 +54,8 @@ public class NewTripFragment extends DialogFragment {
 
         View view = inflater.inflate(R.layout.fragment_create_trip, null);
 
-        EditText tripName = (EditText) view.findViewById(R.id.trip_name);
-        EditText destination = (EditText) view.findViewById(R.id.destination);
+        tripName = (EditText) view.findViewById(R.id.trip_name);
+        destination = (EditText) view.findViewById(R.id.destination);
 
         personNames = new ArrayList<EditText>();
 
@@ -59,7 +66,7 @@ public class NewTripFragment extends DialogFragment {
         builder.setView(view).setPositiveButton("Start", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                startTrip();
+                startTrip(tripName.getText().toString(), destination.getText().toString());
             }
         }).setNegativeButton("Close", new DialogInterface.OnClickListener() {
             @Override
@@ -93,7 +100,7 @@ public class NewTripFragment extends DialogFragment {
         return builder.create();
     }
 
-    private void startTrip() {
+    private void startTrip(String tripname, String destination) {
 
         LocationManager mgr = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
@@ -101,19 +108,24 @@ public class NewTripFragment extends DialogFragment {
         String provider = mgr.getBestProvider(criteria, true);
         final Location loc = mgr.getLastKnownLocation(provider);
 
-         RTApi.startTrip(getActivity(), tripName.getEditableText().toString(), loc, destination.getEditableText().toString(), new RTApi.StartTripCallback() {
-             @Override
-             public void tripStarted(String id) {
-                 Log.d(TAG, "started trip with id " + id);
-                 if (id == null) {
-                     Log.e(TAG, "null trip id");
-                     return;
-                 }
-                 Intent intent = new Intent(getActivity(), LocationMonitorService.class);
-                 intent.putExtra("tripId", id);
-                 getActivity().startService(intent);
-             }
-         });
+        RTApi.startTrip(getActivity(), tripname, loc, destination,  new RTApi.StartTripCallback() {
+            @Override
+            public void tripStarted(String id) {
+                Log.d(TAG, "started trip with id " + id);
+                if (id == null) {
+                    Log.e(TAG, "null trip id");
+                    return;
+                }
+                Intent intent = new Intent(getActivity(), LocationMonitorService.class);
+                intent.putExtra("tripId", id);
+                getActivity().startService(intent);
+
+                editor = LoginActivity.sharedPrefs.edit();
+                editor.putBoolean("tripActive", true);
+                editor.putString("activeTrip", id);
+                editor.commit();
+            }
+        });
 
         for (EditText nameBox: personNames) {
             if (nameBox.getEditableText().toString() != null && nameBox.getEditableText().toString().length() > 1) {
