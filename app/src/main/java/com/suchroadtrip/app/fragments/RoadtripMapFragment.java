@@ -19,7 +19,6 @@ public class RoadtripMapFragment extends Fragment {
         if (!getActivity().getActionBar().isShowing())
             getActivity().getActionBar().show();
 
-        Log.i("MapFragment", "onCreateView");
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_roadtripmap, container, false);
     }
