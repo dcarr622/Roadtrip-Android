@@ -36,7 +36,6 @@ public class LoginActivity extends Activity implements ActionBar.TabListener {
     /**
      * The default email to populate the email field with.
      */
-    public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
 
     public static final String AUTHENTICATION_URL_KEY = "AUTHENTICATION_URL_KEY";
     public static final int LOGIN_TO_TWITTER_REQUEST = 0;
@@ -181,21 +180,22 @@ public class LoginActivity extends Activity implements ActionBar.TabListener {
             return 3;
         }
 
-
-    }
-
-    public CharSequence getPageTitle(int position) {
-        Locale l = Locale.getDefault();
-        switch (position) {
-            case 0:
-                return getString(R.string.login_title).toUpperCase(l);
-            case 1:
-                return getString(R.string.register_title).toUpperCase(l);
-            case 2:
-                return getString(R.string.social_title).toUpperCase(l);
+        public CharSequence getPageTitle(int position) {
+            Locale l = Locale.getDefault();
+            switch (position) {
+                case 0:
+                    return getString(R.string.login_title).toUpperCase(l);
+                case 1:
+                    return getString(R.string.register_title).toUpperCase(l);
+                case 2:
+                    return getString(R.string.social_title).toUpperCase(l);
+            }
+            return null;
         }
-        return null;
+
     }
+
+
 
     public class GetAccessTokenTask extends AsyncTask<String, Void, Void> {
         @Override
