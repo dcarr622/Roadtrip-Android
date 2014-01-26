@@ -10,11 +10,12 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -32,6 +33,8 @@ import com.suchroadtrip.lib.RTApi;
 import com.suchroadtrip.lib.RTContentProvider;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 public class MainActivity extends Activity implements ActionBar.OnNavigationListener, LoaderManager.LoaderCallbacks<Cursor>, RTApi.LoginCallback {
@@ -47,6 +50,51 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
      * {@link android.support.v13.app.FragmentStatePagerAdapter}.
      */
     SectionsPagerAdapter mSectionsPagerAdapter;
+
+    /*For timer*/
+    Handler timerHandler = null;
+    private Date time = new Date(0);
+    private boolean moving = false;
+    private double totalDistance = 0.01;
+    private Location lastLocation = null;
+    private SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss", Locale.US);
+    private Runnable everySecond = new Runnable() {
+
+        public void run() {
+            if(moving) {
+                time.setTime(time.getTime() + 1000);
+                if (lastLocation == null) {
+                    lastLocation = RTApi.getLastLocation();
+                }
+                if (lastLocation != null) {
+                    Location currentLocation = RTApi.getLastLocation();
+                    if (currentLocation != null) {
+                        totalDistance += lastLocation.distanceTo(currentLocation);
+                        lastLocation = currentLocation;
+                    }
+                }
+                setDistTime(timeFormat.format(time), totalDistance);
+                timerHandler.postDelayed(this, 1000);
+            }
+        }
+
+    };
+    private static MainActivity instance;
+
+    public static MainActivity getInstance() {
+        return instance;
+    }
+
+    protected void setDistTime(String time, Double dist) {
+        TextView elapsedTime = (TextView) findViewById(R.id.time_elapsed_text_view);
+        elapsedTime.setText(time);
+        TextView distanceTraveled = (TextView) findViewById(R.id.distance_traveled_text_view);
+        dist *= 0.000621371;
+        if (dist < 0.01) {
+            dist = 0.0;
+        }
+        distanceTraveled.setText(String.format("%.2g%n", dist));
+    }
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -69,12 +117,14 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         actionBarTitle.setTextColor(getResources().getColor(R.color.white));
         actionBarTitle.setTypeface(typeface);
         actionBarTitle.setTextSize(30);
-        actionBarTitle.setPadding(0,0,0,10);
+        actionBarTitle.setPadding(0, 0, 0, 10);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        instance = this;
 
         sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
         isLoggedIn = sharedPrefs.getBoolean("userLoggedInState", false);
@@ -92,6 +142,8 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
             e.printStackTrace();
         }
 
+        timerHandler = new Handler();
+
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Alegreya.ttf");
         int titleId = getResources().getIdentifier("action_bar_title", "id",
                 "android");
@@ -99,12 +151,11 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         actionBarTitle.setTextColor(getResources().getColor(R.color.white));
         actionBarTitle.setTypeface(typeface);
         actionBarTitle.setTextSize(30);
-        actionBarTitle.setPadding(0,0,0,10);
+        actionBarTitle.setPadding(0, 0, 0, 10);
 
         getActionBar().setDisplayShowHomeEnabled(false);
 
         getActionBar().setBackgroundDrawable(new ColorDrawable(0xff006ABD));
-
 
 
         setContentView(R.layout.activity_main);
@@ -123,7 +174,15 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.main_pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+    }
 
+    public void startTimer() {
+        moving = true;
+        timerHandler.post(everySecond);
+    }
+
+    protected void stopTimer() {
+        moving = false;
     }
 
     @Override
@@ -140,8 +199,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
 
             MenuItem startnew = menu.findItem(R.id.action_new_trip);
             startnew.setVisible(false);
-        }
-        else if (sharedPrefs.getBoolean("tripActive", true)) {
+        } else if (sharedPrefs.getBoolean("tripActive", true)) {
             Log.d(TAG, "Trip is not active");
             MenuItem stop = menu.findItem(R.id.action_stop);
             stop.setVisible(false);
@@ -165,6 +223,10 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         if (id == R.id.action_new_trip) {
             NewTripFragment newTripDialog = new NewTripFragment();
             newTripDialog.show(getFragmentManager(), "New Trip");
+            return true;
+        }
+        if (id == R.id.action_stop) {
+            getSharedPreferences("roadtrip_preferences", MODE_PRIVATE).edit().remove("activeTrip").putBoolean("tripActive", false).commit();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -219,12 +281,13 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             if (position == 0) {
-                if(mapFragment == null)
+                if (mapFragment == null)
                     mapFragment = RoadtripMapFragment.newInstance();
+                mapFragment.setTrip("52e4de71bc7b92b20ecef7fa");
                 return mapFragment;
             }
             if (position == 1) {
-                if(feedFragment == null)
+                if (feedFragment == null)
                     feedFragment = RoadtripFeedFragment.newInstance("52e4c576bc7b92b20ecef6df"); //TODO read the real id's here
                 return feedFragment;
             }
