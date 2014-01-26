@@ -61,9 +61,10 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
         super.onCreate(savedInstanceState);
 
         sharedPrefs = getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
+        sharedPrefs.edit().putString("username", "vmagro").putString("password", "wowsuchapp").commit();
         isLoggedIn = sharedPrefs.getBoolean("userLoggedInState", false);
         //TODO remove this
-//        isLoggedIn = true;
+        isLoggedIn = true;
 
         if (!isLoggedIn) {
             Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
@@ -91,7 +92,7 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
 
 
         try {
-            RTApi.login(this, this);
+            RTApi.login("vmagro", "wowsuchapp", this);
         } catch (IOException e) {
             e.printStackTrace();
         }

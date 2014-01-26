@@ -56,14 +56,19 @@ public class RTApi {
                     connection = (HttpURLConnection) LOGIN_URL.openConnection();
                     connection.setRequestMethod("POST");
                     connection.setDoOutput(true);
+                    connection.setRequestProperty("Content-Type", "application/json");
 
                     try {
-                        String params = "username=" + username + "&" + "password=" + password;
-                        connection.getOutputStream().write(params.getBytes());
+                        JSONObject json = new JSONObject();
+                        json.put("username", username);
+                        json.put("password", password);
+                        connection.getOutputStream().write(json.toString().getBytes());
+
+                        Log.d(TAG, "login response code: " + connection.getResponseCode());
 
                         JSONObject response = readJson(connection.getInputStream());
 
-                        Log.d(TAG, response.toString());
+                        Log.d(TAG, "login response: " + response.toString());
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
