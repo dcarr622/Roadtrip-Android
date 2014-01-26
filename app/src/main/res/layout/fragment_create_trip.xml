@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="320dp"
     android:layout_height="480dp"
@@ -11,7 +11,7 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/offwhite">
+        android:background="@color/white">
 
         <TextView
             android:layout_width="300dp"
@@ -26,7 +26,7 @@
             android:typeface="sans"
             android:fontFamily="sans-serif-light"
             android:paddingLeft="15dp"
-            android:background="@color/offwhite" />
+            android:background="@color/white" />
 
         <EditText
             android:layout_width="300dp"
@@ -54,16 +54,16 @@
             <EditText
                 android:layout_width="260dp"
                 android:layout_height="40dp"
-                android:id="@+id/editText3"
+                android:id="@+id/friend_box"
                 android:text="Friends" />
 
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:id="@+id/imageView"
-                android:background="@drawable/ic_action_add_person" />
+                android:id="@+id/add_person_button"
+                android:background="@android:drawable/ic_menu_add" />
         </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</ScrollView>
